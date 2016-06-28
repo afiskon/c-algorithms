@@ -13,6 +13,11 @@
 #ifndef RBTREE_H
 #define RBTREE_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
 /*
  * RBNode is intended to be used as the first field of a larger struct,
  * whose additional fields carry whatever payload data the caller needs
@@ -47,7 +52,8 @@ typedef void (*rb_combiner) (RBNode *existing, const RBNode *newdata, void *arg)
 typedef RBNode *(*rb_allocfunc) (void *arg);
 typedef void (*rb_freefunc) (RBNode *x, void *arg);
 
-extern RBTree *rb_create(Size node_size,
+extern void rb_create(RBTree* tree,
+		  size_t node_size,
 		  rb_comparator comparator,
 		  rb_combiner combiner,
 		  rb_allocfunc allocfunc,

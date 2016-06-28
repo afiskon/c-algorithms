@@ -16,9 +16,8 @@
  *
  *-------------------------------------------------------------------------
  */
-#include "postgres.h"
 
-#include "lib/ilist.h"
+#include "ilist.h"
 
 /*
  * Delete 'node' from list.
@@ -32,16 +31,14 @@ slist_delete(slist_head *head, slist_node *node)
 {
 	slist_node *last = &head->head;
 	slist_node *cur;
-	bool found	PG_USED_FOR_ASSERTS_ONLY = false;
+	bool found = false;
 
 	while ((cur = last->next) != NULL)
 	{
 		if (cur == node)
 		{
 			last->next = cur->next;
-#ifdef USE_ASSERT_CHECKING
 			found = true;
-#endif
 			break;
 		}
 		last = cur;

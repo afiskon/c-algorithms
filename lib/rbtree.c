@@ -24,9 +24,8 @@
  *
  *-------------------------------------------------------------------------
  */
-#include "postgres.h"
 
-#include "lib/rbtree.h"
+#include "rbtree.h"
 
 
 /*
@@ -59,7 +58,7 @@ struct RBTree
 
 	/* Remaining fields are constant after rb_create */
 
-	Size		node_size;		/* actual size of tree nodes */
+	size_t		node_size;		/* actual size of tree nodes */
 	/* The caller-supplied manipulation functions */
 	rb_comparator comparator;
 	rb_combiner combiner;
@@ -82,6 +81,7 @@ static RBNode sentinel = {InitialState, RBBLACK, RBNIL, RBNIL, NULL};
  * rb_create: create an empty RBTree
  *
  * Arguments are:
+ *  tree: buffer for storing RBTree structure
  *	node_size: actual size of tree nodes (> sizeof(RBNode))
  *	The manipulation functions:
  *	comparator: compare two RBNodes for less/equal/greater
@@ -102,24 +102,20 @@ static RBNode sentinel = {InitialState, RBBLACK, RBNIL, RBNIL, NULL};
  * valid data!	freefunc can be NULL if caller doesn't require retail
  * space reclamation.
  *
- * The RBTree node is palloc'd in the caller's memory context.  Note that
- * all contents of the tree are actually allocated by the caller, not here.
- *
  * Since tree contents are managed by the caller, there is currently not
  * an explicit "destroy" operation; typically a tree would be freed by
  * resetting or deleting the memory context it's stored in.  You can pfree
  * the RBTree node if you feel the urge.
  */
-RBTree *
-rb_create(Size node_size,
+void
+rb_create(RBTree *tree,
+		  size_t node_size,
 		  rb_comparator comparator,
 		  rb_combiner combiner,
 		  rb_allocfunc allocfunc,
 		  rb_freefunc freefunc,
 		  void *arg)
 {
-	RBTree	   *tree = (RBTree *) palloc(sizeof(RBTree));
-
 	Assert(node_size > sizeof(RBNode));
 
 	tree->root = RBNIL;
@@ -132,8 +128,6 @@ rb_create(Size node_size,
 	tree->freefunc = freefunc;
 
 	tree->arg = arg;
-
-	return tree;
 }
 
 /* Copy the additional data fields from one RBNode to another */
@@ -702,8 +696,9 @@ restart:
 				ascend(node->parent);
 			break;
 		default:
-			elog(ERROR, "unrecognized rbtree node state: %d",
+			fprintf(stderr, "unrecognized rbtree node state: %d",
 				 node->iteratorState);
+			exit(1);
 	}
 
 	return NULL;
@@ -739,8 +734,9 @@ restart:
 				ascend(node->parent);
 			break;
 		default:
-			elog(ERROR, "unrecognized rbtree node state: %d",
+			fprintf(stderr, "unrecognized rbtree node state: %d",
 				 node->iteratorState);
+			exit(1);
 	}
 
 	return NULL;
@@ -776,8 +772,9 @@ restart:
 				ascend(node->parent);
 			break;
 		default:
-			elog(ERROR, "unrecognized rbtree node state: %d",
+			fprintf(stderr, "unrecognized rbtree node state: %d",
 				 node->iteratorState);
+			exit(1);
 	}
 
 	return NULL;
@@ -813,8 +810,9 @@ restart:
 				ascend(node->parent);
 			break;
 		default:
-			elog(ERROR, "unrecognized rbtree node state: %d",
+			fprintf(stderr, "unrecognized rbtree node state: %d",
 				 node->iteratorState);
+			exit(1);
 	}
 
 	return NULL;
@@ -828,11 +826,6 @@ restart:
  *
  * If the tree is changed during traversal, results of further calls to
  * rb_iterate are unspecified.
- *
- * Note: this used to return a separately palloc'd iterator control struct,
- * but that's a bit pointless since the data structure is incapable of
- * supporting multiple concurrent traversals.  Now we just keep the state
- * in RBTree.
  */
 void
 rb_begin_iterate(RBTree *rb, RBOrderControl ctrl)
@@ -856,7 +849,8 @@ rb_begin_iterate(RBTree *rb, RBOrderControl ctrl)
 			rb->iterate = rb_inverted_iterator;
 			break;
 		default:
-			elog(ERROR, "unrecognized rbtree iteration order: %d", ctrl);
+			fprintf(stderr, "unrecognized rbtree iteration order: %d", ctrl);
+			exit(1);
 	}
 }
 

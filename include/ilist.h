@@ -106,6 +106,10 @@
 #ifndef ILIST_H
 #define ILIST_H
 
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stddef.h>
+
 /*
  * Enable for extra debugging. This is rather expensive, so it's not enabled by
  * default even when USE_ASSERT_CHECKING.
