@@ -46,29 +46,6 @@
 #define RBRED		(1)
 
 /*
- * RBTree control structure
- */
-struct RBTree
-{
-	RBNode	   *root;			/* root node, or RBNIL if tree is empty */
-
-	/* Iteration state */
-	RBNode	   *cur;			/* current iteration node */
-	RBNode	   *(*iterate) (RBTree *rb);
-
-	/* Remaining fields are constant after rb_create */
-
-	size_t		node_size;		/* actual size of tree nodes */
-	/* The caller-supplied manipulation functions */
-	rb_comparator comparator;
-	rb_combiner combiner;
-	rb_allocfunc allocfunc;
-	rb_freefunc freefunc;
-	/* Passthrough arg passed to all manipulation functions */
-	void	   *arg;
-};
-
-/*
  * all leafs are sentinels, use customized NIL name to prevent
  * collision with system-wide constant NIL which is actually NULL
  */

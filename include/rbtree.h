@@ -34,8 +34,36 @@ typedef struct RBNode
 	struct RBNode *parent;		/* parent, or NULL (not RBNIL!) if none */
 } RBNode;
 
-/* Opaque struct representing a whole tree */
+/* Support functions to be provided by caller */
+typedef int (*rb_comparator) (const RBNode *a, const RBNode *b, void *arg);
+typedef void (*rb_combiner) (RBNode *existing, const RBNode *newdata, void *arg);
+typedef RBNode *(*rb_allocfunc) (void *arg);
+typedef void (*rb_freefunc) (RBNode *x, void *arg);
+
 typedef struct RBTree RBTree;
+
+/*
+ * RBTree control structure
+ */
+struct RBTree
+{
+	RBNode	   *root;			/* root node, or RBNIL if tree is empty */
+
+	/* Iteration state */
+	RBNode	   *cur;			/* current iteration node */
+	RBNode	   *(*iterate) (RBTree *rb);
+
+	/* Remaining fields are constant after rb_create */
+
+	size_t		node_size;		/* actual size of tree nodes */
+	/* The caller-supplied manipulation functions */
+	rb_comparator comparator;
+	rb_combiner combiner;
+	rb_allocfunc allocfunc;
+	rb_freefunc freefunc;
+	/* Passthrough arg passed to all manipulation functions */
+	void	   *arg;
+};
 
 /* Available tree iteration orderings */
 typedef enum RBOrderControl
@@ -45,12 +73,6 @@ typedef enum RBOrderControl
 	DirectWalk,					/* preorder: node, left child, right child */
 	InvertedWalk				/* postorder: left child, right child, node */
 } RBOrderControl;
-
-/* Support functions to be provided by caller */
-typedef int (*rb_comparator) (const RBNode *a, const RBNode *b, void *arg);
-typedef void (*rb_combiner) (RBNode *existing, const RBNode *newdata, void *arg);
-typedef RBNode *(*rb_allocfunc) (void *arg);
-typedef void (*rb_freefunc) (RBNode *x, void *arg);
 
 extern void rb_create(RBTree* tree,
 		  size_t node_size,
