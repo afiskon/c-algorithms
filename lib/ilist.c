@@ -43,7 +43,7 @@ slist_delete(slist_head *head, slist_node *node)
 		}
 		last = cur;
 	}
-	Assert(found);
+	assert(found);
 
 	slist_check(head);
 }

@@ -26,6 +26,7 @@
  */
 
 #include "rbtree.h"
+#include <assert.h>
 
 /*
  * Values of RBNode.iteratorState
@@ -115,7 +116,7 @@ rb_create(RBTree *tree,
 		  rb_freefunc freefunc,
 		  void *arg)
 {
-	Assert(node_size > sizeof(RBNode));
+	assert(node_size > sizeof(RBNode));
 
 	tree->root = RBNIL;
 	tree->cur = RBNIL;

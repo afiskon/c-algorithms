@@ -110,6 +110,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <assert.h>
 
 /*
  * CppAsString
@@ -441,7 +442,7 @@ dlist_pop_head_node(dlist_head *head)
 {
 	dlist_node *node;
 
-	Assert(!dlist_is_empty(head));
+	assert(!dlist_is_empty(head));
 	node = head->head.next;
 	dlist_delete(node);
 	return node;
@@ -492,7 +493,7 @@ dlist_has_prev(dlist_head *head, dlist_node *node)
 static inline dlist_node *
 dlist_next_node(dlist_head *head, dlist_node *node)
 {
-	Assert(dlist_has_next(head, node));
+	assert(dlist_has_next(head, node));
 	return node->next;
 }
 
@@ -502,7 +503,7 @@ dlist_next_node(dlist_head *head, dlist_node *node)
 static inline dlist_node *
 dlist_prev_node(dlist_head *head, dlist_node *node)
 {
-	Assert(dlist_has_prev(head, node));
+	assert(dlist_has_prev(head, node));
 	return node->prev;
 }
 
@@ -510,7 +511,7 @@ dlist_prev_node(dlist_head *head, dlist_node *node)
 static inline void *
 dlist_head_element_off(dlist_head *head, size_t off)
 {
-	Assert(!dlist_is_empty(head));
+	assert(!dlist_is_empty(head));
 	return (char *) head->head.next - off;
 }
 
@@ -527,7 +528,7 @@ dlist_head_node(dlist_head *head)
 static inline void *
 dlist_tail_element_off(dlist_head *head, size_t off)
 {
-	Assert(!dlist_is_empty(head));
+	assert(!dlist_is_empty(head));
 	return (char *) head->head.prev - off;
 }
 
@@ -669,7 +670,7 @@ slist_pop_head_node(slist_head *head)
 {
 	slist_node *node;
 
-	Assert(!slist_is_empty(head));
+	assert(!slist_is_empty(head));
 	node = head->head.next;
 	head->head.next = node->next;
 	slist_check(head);
@@ -693,7 +694,7 @@ slist_has_next(slist_head *head, slist_node *node)
 static inline slist_node *
 slist_next_node(slist_head *head, slist_node *node)
 {
-	Assert(slist_has_next(head, node));
+	assert(slist_has_next(head, node));
 	return node->next;
 }
 
@@ -701,7 +702,7 @@ slist_next_node(slist_head *head, slist_node *node)
 static inline void *
 slist_head_element_off(slist_head *head, size_t off)
 {
-	Assert(!slist_is_empty(head));
+	assert(!slist_is_empty(head));
 	return (char *) head->head.next - off;
 }
 
