@@ -14,3 +14,5 @@ make -j4
 cmake -G "MinGW Makefiles" ..
 mingw32-make -j4
 ```
+
+See also: https://github.com/afiskon/c-algorithms-examples
