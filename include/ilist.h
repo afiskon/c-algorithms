@@ -449,6 +449,21 @@ dlist_pop_head_node(dlist_head *head)
 }
 
 /*
+ * Remove and return the last node from a list (there must be one).
+ */
+static inline dlist_node *
+dlist_pop_tail_node(dlist_head *head)
+{
+	dlist_node *node;
+
+	assert(!dlist_is_empty(head));
+	node = head->head.prev;
+	dlist_delete(node);
+	return node;
+}
+
+
+/*
  * Move element from its current position in the list to the head position in
  * the same list.
  *
