@@ -58,7 +58,10 @@ dlist_check(dlist_head *head)
 	dlist_node *cur;
 
 	if (head == NULL)
-		elog(ERROR, "doubly linked list head address is NULL");
+	{
+		fprintf(stderr, "doubly linked list head address is NULL\n");
+		exit(1);
+	}
 
 	if (head->head.next == NULL && head->head.prev == NULL)
 		return;					/* OK, initialized as zeroes */
@@ -71,7 +74,10 @@ dlist_check(dlist_head *head)
 			cur->prev == NULL ||
 			cur->prev->next != cur ||
 			cur->next->prev != cur)
-			elog(ERROR, "doubly linked list is corrupted");
+		{
+			fprintf(stderr, "doubly linked list is corrupted\n");
+			exit(1);
+		}
 	}
 
 	/* iterate in backward direction */
@@ -82,7 +88,10 @@ dlist_check(dlist_head *head)
 			cur->prev == NULL ||
 			cur->prev->next != cur ||
 			cur->next->prev != cur)
-			elog(ERROR, "doubly linked list is corrupted");
+		{
+			fprintf(stderr, "doubly linked list is corrupted\n");
+			exit(1);
+		}
 	}
 }
 
@@ -95,7 +104,10 @@ slist_check(slist_head *head)
 	slist_node *cur;
 
 	if (head == NULL)
-		elog(ERROR, "singly linked list head address is NULL");
+	{
+		fprintf(stderr, "singly linked list head address is NULL\n");
+		exit(1);
+	}
 
 	/*
 	 * there isn't much we can test in a singly linked list except that it

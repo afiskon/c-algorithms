@@ -27,7 +27,6 @@
 
 #include "rbtree.h"
 
-
 /*
  * Values of RBNode.iteratorState
  *
@@ -696,7 +695,7 @@ restart:
 				ascend(node->parent);
 			break;
 		default:
-			fprintf(stderr, "unrecognized rbtree node state: %d",
+			fprintf(stderr, "unrecognized rbtree node state: %d\n",
 				 node->iteratorState);
 			exit(1);
 	}
@@ -734,7 +733,7 @@ restart:
 				ascend(node->parent);
 			break;
 		default:
-			fprintf(stderr, "unrecognized rbtree node state: %d",
+			fprintf(stderr, "unrecognized rbtree node state: %d\n",
 				 node->iteratorState);
 			exit(1);
 	}
@@ -772,7 +771,7 @@ restart:
 				ascend(node->parent);
 			break;
 		default:
-			fprintf(stderr, "unrecognized rbtree node state: %d",
+			fprintf(stderr, "unrecognized rbtree node state: %d\n",
 				 node->iteratorState);
 			exit(1);
 	}
@@ -810,7 +809,7 @@ restart:
 				ascend(node->parent);
 			break;
 		default:
-			fprintf(stderr, "unrecognized rbtree node state: %d",
+			fprintf(stderr, "unrecognized rbtree node state: %d\n",
 				 node->iteratorState);
 			exit(1);
 	}
@@ -849,7 +848,7 @@ rb_begin_iterate(RBTree *rb, RBOrderControl ctrl)
 			rb->iterate = rb_inverted_iterator;
 			break;
 		default:
-			fprintf(stderr, "unrecognized rbtree iteration order: %d", ctrl);
+			fprintf(stderr, "unrecognized rbtree iteration order: %d\n", ctrl);
 			exit(1);
 	}
 }
