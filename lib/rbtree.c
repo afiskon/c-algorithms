@@ -950,7 +950,14 @@ rb_right_left_walk(RBTreeRightLeftWalk* rlw)
 }
 
 /*
- * Begin direct walk.
+ * Begin direct walk (a.k.a pre-order traversal).
+ *
+ * Pre-order traversal while duplicating nodes and edges can make a complete
+ * duplicate of a binary tree. It can also be used to make a prefix expression
+ * (Polish notation) from expression trees: traverse the expression tree
+ * pre-orderly.
+ *
+ * https://en.wikipedia.org/wiki/Tree_traversal#Applications
  */
 void
 rb_begin_direct_walk(RBTree *rb, RBTreeDirectWalk* dw)
@@ -1009,7 +1016,7 @@ rb_direct_walk(RBTreeDirectWalk* dw)
 }
 
 /*
- * Begin inverted walk.
+ * Begin inverted walk (a.k.a post-order traversal).
  */
 void
 rb_begin_inverted_walk(RBTree *rb, RBTreeInvertedWalk* iw)
@@ -1021,6 +1028,12 @@ rb_begin_inverted_walk(RBTree *rb, RBTreeInvertedWalk* iw)
 
 /*
  * Inverted walk: get next node. Returns NULL if there is none.
+ *
+ * Post-order traversal while deleting or freeing nodes and values can delete
+ * or free an entire binary tree. It can also generate a postfix
+ * representation of a binary tree.
+ *
+ * https://en.wikipedia.org/wiki/Tree_traversal#Applications
  */
 RBNode*
 rb_inverted_walk(RBTreeInvertedWalk* iw)
