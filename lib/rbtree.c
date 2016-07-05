@@ -842,3 +842,270 @@ rb_iterate(RBTree *rb)
 
 	return rb->iterate(rb);
 }
+
+/*
+ * Begin left right walk.
+ */
+void
+rb_begin_left_right_walk(RBTree *rb, RBTreeLeftRightWalk* lrw)
+{
+	lrw->rb = rb;
+	lrw->last_visited = NULL;
+}
+
+/*
+ * Left right walk: get next node. Returns NULL if there is none.
+ */
+RBNode*
+rb_left_right_walk(RBTreeLeftRightWalk* lrw)
+{
+    if(lrw->rb->root == RBNIL)
+        return NULL;
+
+    if(lrw->last_visited == NULL)
+	{
+        lrw->last_visited = lrw->rb->root;
+		while(lrw->last_visited->left != RBNIL)
+			lrw->last_visited = lrw->last_visited->left;
+
+		return lrw->last_visited;
+	}
+
+	if(lrw->last_visited->right != RBNIL)
+	{
+		lrw->last_visited = lrw->last_visited->right;
+		while(lrw->last_visited->left != RBNIL)
+			lrw->last_visited = lrw->last_visited->left;
+
+		return lrw->last_visited;
+	}
+
+	for(;;)
+	{
+		RBNode* came_from = lrw->last_visited;
+		lrw->last_visited = lrw->last_visited->parent;
+		if(lrw->last_visited == NULL)
+			break;
+
+		if(lrw->last_visited->left == came_from)
+			break; /* came from left sub-tree, return current node */
+
+		/* else - came from right sub-tree, continue to move up */
+	}
+
+    return lrw->last_visited;
+}
+
+/*
+ * Begin right left walk.
+ */
+void
+rb_begin_right_left_walk(RBTree *rb, RBTreeRightLeftWalk* rlw)
+{
+	rlw->rb = rb;
+	rlw->last_visited = NULL;
+}
+
+/*
+ * Right left walk: get next node. Returns NULL if there is none.
+ */
+RBNode*
+rb_right_left_walk(RBTreeRightLeftWalk* rlw)
+{
+    if(rlw->rb->root == RBNIL)
+        return NULL;
+
+    if(rlw->last_visited == NULL)
+	{
+        rlw->last_visited = rlw->rb->root;
+		while(rlw->last_visited->right != RBNIL)
+			rlw->last_visited = rlw->last_visited->right;
+
+		return rlw->last_visited;
+	}
+
+	if(rlw->last_visited->left != RBNIL)
+	{
+		rlw->last_visited = rlw->last_visited->left;
+		while(rlw->last_visited->right != RBNIL)
+			rlw->last_visited = rlw->last_visited->right;
+
+		return rlw->last_visited;
+	}
+
+	for(;;)
+	{
+		RBNode* came_from = rlw->last_visited;
+		rlw->last_visited = rlw->last_visited->parent;
+		if(rlw->last_visited == NULL)
+			break;
+
+		if(rlw->last_visited->right == came_from)
+			break; /* came from right sub-tree, return current node */
+
+		/* else - came from left sub-tree, continue to move up */
+	}
+
+    return rlw->last_visited;
+}
+
+/*
+ * Begin direct walk.
+ */
+void
+rb_begin_direct_walk(RBTree *rb, RBTreeDirectWalk* dw)
+{
+	dw->rb = rb;
+	dw->last_visited = NULL;
+}
+
+/*
+ * Direct walk: get next node. Returns NULL if there is none.
+ */
+RBNode*
+rb_direct_walk(RBTreeDirectWalk* dw)
+{
+    if(dw->rb->root == RBNIL)
+        return NULL;
+
+    if(dw->last_visited == NULL)
+    {
+        dw->last_visited = dw->rb->root;
+        return dw->last_visited;
+    }
+
+    if(dw->last_visited->left != RBNIL)
+    {
+        dw->last_visited = dw->last_visited->left;
+        return dw->last_visited;
+    }
+
+    do
+    {
+        if(dw->last_visited->right != RBNIL)
+        {
+            dw->last_visited = dw->last_visited->right;
+			break;
+        }
+
+		/* go up and one step right */
+		for(;;)
+		{
+			RBNode* came_from = dw->last_visited;
+        	dw->last_visited = dw->last_visited->parent;
+			if(dw->last_visited == NULL)
+				break;
+
+			if((dw->last_visited->right != came_from) && (dw->last_visited->right != RBNIL))
+			{
+				dw->last_visited = dw->last_visited->right;
+				return dw->last_visited;
+			}
+		}
+    }
+	while(dw->last_visited != NULL);
+
+    return dw->last_visited;
+}
+
+/*
+ * Begin inverted walk.
+ */
+void
+rb_begin_inverted_walk(RBTree *rb, RBTreeInvertedWalk* iw)
+{
+	iw->rb = rb;
+	iw->last_visited = NULL;
+	iw->next_step = NextStepNone;
+}
+
+/*
+ * Inverted walk: get next node. Returns NULL if there is none.
+ */
+RBNode*
+rb_inverted_walk(RBTreeInvertedWalk* iw)
+{
+	RBNode* came_from;
+
+    if(iw->rb->root == RBNIL)
+        return NULL;
+
+    if(iw->last_visited == NULL)
+    {
+        iw->last_visited = iw->rb->root;
+		iw->next_step = NextStepLeft;
+    }
+
+loop:
+	switch(iw->next_step)
+	{
+		case NextStepLeft:
+			came_from = iw->last_visited;
+			while(iw->last_visited->left != RBNIL)
+				iw->last_visited = iw->last_visited->left;
+
+			iw->next_step = NextStepRight;
+			goto loop;
+
+		case NextStepRight:
+			if(iw->last_visited->right != RBNIL)
+			{
+				iw->last_visited = iw->last_visited->right;
+				iw->next_step = NextStepLeft;
+				goto loop;
+			}
+			else /* not moved - return current, then go up */
+				iw->next_step = NextStepUp;
+			break;
+		case NextStepUp:
+			for(;;)
+			{
+				came_from = iw->last_visited;
+				iw->last_visited = iw->last_visited->parent;
+				if(iw->last_visited == NULL)
+					break; /* end of iteration */
+
+				if(came_from == iw->last_visited->right)
+				{
+					/* return current, then continue to go up */
+					break;
+				}
+
+				/* otherwise we came from the left */
+				iw->next_step = NextStepRight;
+				goto loop;
+			}
+			break;
+		default:
+			fprintf(stderr, "Unexpected next step value during inverted walk: %d\n", iw->next_step);
+			exit(1);
+	}
+
+	return iw->last_visited;
+}
+
+/*
+ * Print tree to stdout.
+ */
+void
+rb_tree_debug_print(RBTree* rb, rb_sprintfunc sprintfunc)
+{
+	RBTreeDirectWalk dw;
+	RBNode* node;
+	char buff[1024];
+
+	rb_begin_direct_walk(rb, &dw);
+	printf("nodes = {}\n");
+	for(;;)
+	{
+		node = rb_direct_walk(&dw);
+		if(!node)
+			break;
+		sprintfunc(node, buff);
+		printf("nodes['%p'] = {'parent':'%p','left':'%p','right':'%p','color':'%s','data':'%s'}\n",
+			node, node->parent, node->left == RBNIL ? NULL : node->left, node->right == RBNIL ? NULL : node->right,
+			node->color == RBBLACK ? "black" : "red", buff);
+	}
+}
+
+

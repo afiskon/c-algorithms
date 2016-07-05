@@ -39,6 +39,7 @@ typedef int (*rb_comparator) (const RBNode *a, const RBNode *b, void *arg);
 typedef void (*rb_combiner) (RBNode *existing, const RBNode *newdata, void *arg);
 typedef RBNode *(*rb_allocfunc) (void *arg);
 typedef void (*rb_freefunc) (RBNode *x, void *arg);
+typedef void (*rb_sprintfunc) (RBNode *x, char* buff);
 
 typedef struct RBTree RBTree;
 
@@ -90,5 +91,53 @@ extern void rb_delete(RBTree *rb, RBNode *node);
 
 extern void rb_begin_iterate(RBTree *rb, RBOrderControl ctrl);
 extern RBNode *rb_iterate(RBTree *rb);
+
+extern void rb_tree_debug_print(RBTree* rb, rb_sprintfunc sprintfunc);
+
+typedef enum RBTreeNextStep
+{
+	NextStepNone,
+	NextStepUp,
+	NextStepLeft,
+	NextStepRight
+} RBTreeNextStep;
+
+typedef struct
+{
+	RBTree* rb;
+	RBNode* last_visited;
+} RBTreeLeftRightWalk;
+
+extern void rb_begin_left_right_walk(RBTree *rb, RBTreeLeftRightWalk* lrw);
+extern RBNode* rb_left_right_walk(RBTreeLeftRightWalk* lrw);
+
+typedef struct
+{
+	RBTree* rb;
+	RBNode* last_visited;
+} RBTreeRightLeftWalk;
+
+extern void rb_begin_right_left_walk(RBTree *rb, RBTreeRightLeftWalk* rlw);
+extern RBNode* rb_right_left_walk(RBTreeRightLeftWalk* rlw);
+
+typedef struct
+{
+	RBTree* rb;
+	RBNode* last_visited;
+} RBTreeDirectWalk;
+
+extern void rb_begin_direct_walk(RBTree *rb, RBTreeDirectWalk* dw);
+extern RBNode* rb_direct_walk(RBTreeDirectWalk* dw);
+
+typedef struct
+{
+	RBTree* rb;
+	RBNode* last_visited;
+	RBTreeNextStep next_step;
+} RBTreeInvertedWalk;
+
+extern void rb_begin_inverted_walk(RBTree *rb, RBTreeInvertedWalk* dw);
+extern RBNode* rb_inverted_walk(RBTreeInvertedWalk* dw);
+
 
 #endif   /* RBTREE_H */
