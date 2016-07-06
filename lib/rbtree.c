@@ -851,7 +851,7 @@ rb_begin_left_right_walk(RBTree *rb, RBTreeLeftRightWalk* lrw)
 {
 	lrw->rb = rb;
 	lrw->last_visited = NULL;
-	lrw->rb->is_over = (lrw->rb->root == RBNIL);
+	lrw->is_over = (lrw->rb->root == RBNIL);
 }
 
 /*
@@ -860,7 +860,7 @@ rb_begin_left_right_walk(RBTree *rb, RBTreeLeftRightWalk* lrw)
 RBNode*
 rb_left_right_walk(RBTreeLeftRightWalk* lrw)
 {
-    if(lrw->rb->is_over)
+    if(lrw->is_over)
         return NULL;
 
     if(lrw->last_visited == NULL)
