@@ -851,6 +851,7 @@ rb_begin_left_right_walk(RBTree *rb, RBTreeLeftRightWalk* lrw)
 {
 	lrw->rb = rb;
 	lrw->last_visited = NULL;
+	lrw->rb->is_over = (lrw->rb->root == RBNIL);
 }
 
 /*
@@ -859,7 +860,7 @@ rb_begin_left_right_walk(RBTree *rb, RBTreeLeftRightWalk* lrw)
 RBNode*
 rb_left_right_walk(RBTreeLeftRightWalk* lrw)
 {
-    if(lrw->rb->root == RBNIL)
+    if(lrw->rb->is_over)
         return NULL;
 
     if(lrw->last_visited == NULL)
@@ -885,7 +886,10 @@ rb_left_right_walk(RBTreeLeftRightWalk* lrw)
 		RBNode* came_from = lrw->last_visited;
 		lrw->last_visited = lrw->last_visited->parent;
 		if(lrw->last_visited == NULL)
+		{
+			lrw->is_over = true;
 			break;
+		}
 
 		if(lrw->last_visited->left == came_from)
 			break; /* came from left sub-tree, return current node */
@@ -904,6 +908,7 @@ rb_begin_right_left_walk(RBTree *rb, RBTreeRightLeftWalk* rlw)
 {
 	rlw->rb = rb;
 	rlw->last_visited = NULL;
+	rlw->is_over = (rlw->rb->root == RBNIL);
 }
 
 /*
@@ -912,7 +917,7 @@ rb_begin_right_left_walk(RBTree *rb, RBTreeRightLeftWalk* rlw)
 RBNode*
 rb_right_left_walk(RBTreeRightLeftWalk* rlw)
 {
-    if(rlw->rb->root == RBNIL)
+    if(rlw->is_over)
         return NULL;
 
     if(rlw->last_visited == NULL)
@@ -938,7 +943,10 @@ rb_right_left_walk(RBTreeRightLeftWalk* rlw)
 		RBNode* came_from = rlw->last_visited;
 		rlw->last_visited = rlw->last_visited->parent;
 		if(rlw->last_visited == NULL)
+		{
+			rlw->is_over = true;
 			break;
+		}
 
 		if(rlw->last_visited->right == came_from)
 			break; /* came from right sub-tree, return current node */
@@ -964,6 +972,7 @@ rb_begin_direct_walk(RBTree *rb, RBTreeDirectWalk* dw)
 {
 	dw->rb = rb;
 	dw->last_visited = NULL;
+	dw->is_over = (dw->rb->root == RBNIL);
 }
 
 /*
@@ -972,7 +981,7 @@ rb_begin_direct_walk(RBTree *rb, RBTreeDirectWalk* dw)
 RBNode*
 rb_direct_walk(RBTreeDirectWalk* dw)
 {
-    if(dw->rb->root == RBNIL)
+    if(dw->is_over)
         return NULL;
 
     if(dw->last_visited == NULL)
@@ -1001,7 +1010,10 @@ rb_direct_walk(RBTreeDirectWalk* dw)
 			RBNode* came_from = dw->last_visited;
         	dw->last_visited = dw->last_visited->parent;
 			if(dw->last_visited == NULL)
+			{
+				dw->is_over = true;
 				break;
+			}
 
 			if((dw->last_visited->right != came_from) && (dw->last_visited->right != RBNIL))
 			{
@@ -1024,6 +1036,7 @@ rb_begin_inverted_walk(RBTree *rb, RBTreeInvertedWalk* iw)
 	iw->rb = rb;
 	iw->last_visited = NULL;
 	iw->next_step = NextStepNone;
+	iw->is_over = (iw->rb->root == RBNIL);
 }
 
 /*
@@ -1040,7 +1053,7 @@ rb_inverted_walk(RBTreeInvertedWalk* iw)
 {
 	RBNode* came_from;
 
-    if(iw->rb->root == RBNIL)
+    if(iw->is_over)
         return NULL;
 
     if(iw->last_visited == NULL)
@@ -1076,7 +1089,10 @@ loop:
 				came_from = iw->last_visited;
 				iw->last_visited = iw->last_visited->parent;
 				if(iw->last_visited == NULL)
+				{
+					iw->is_over = true;
 					break; /* end of iteration */
+				}
 
 				if(came_from == iw->last_visited->right)
 				{

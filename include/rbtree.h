@@ -106,6 +106,7 @@ typedef struct
 {
 	RBTree* rb;
 	RBNode* last_visited;
+	bool is_over;
 } RBTreeLeftRightWalk;
 
 extern void rb_begin_left_right_walk(RBTree *rb, RBTreeLeftRightWalk* lrw);
@@ -115,6 +116,7 @@ typedef struct
 {
 	RBTree* rb;
 	RBNode* last_visited;
+	bool is_over;
 } RBTreeRightLeftWalk;
 
 extern void rb_begin_right_left_walk(RBTree *rb, RBTreeRightLeftWalk* rlw);
@@ -124,6 +126,7 @@ typedef struct
 {
 	RBTree* rb;
 	RBNode* last_visited;
+	bool is_over;
 } RBTreeDirectWalk;
 
 extern void rb_begin_direct_walk(RBTree *rb, RBTreeDirectWalk* dw);
@@ -134,6 +137,7 @@ typedef struct
 	RBTree* rb;
 	RBNode* last_visited;
 	RBTreeNextStep next_step;
+	bool is_over;
 } RBTreeInvertedWalk;
 
 extern void rb_begin_inverted_walk(RBTree *rb, RBTreeInvertedWalk* dw);
