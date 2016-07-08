@@ -6,5 +6,8 @@
 		* (Only left-right and right-left walk) Nodes are returned in sorted (reverse-sorted) order
 		* If all nodes are unique, every node is returned only once
     * Make corresponding changes to the blog post
+	* Join LeftRightWalk and RightLeftWalk to the single structure
+	* Make sure that changing walk direction from left-right to right-left works well
+	* Implement search by part of the key: find_by_partial_key_march(rb, rb_comparator, void* arg)
 * Add hash table implementation based on https://github.com/afiskon/c-hash-tables + write tests
 * Add benchmarks. Figure out what rbtree iteration is fastest (on integer keys)
