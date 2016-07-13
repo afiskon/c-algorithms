@@ -1,6 +1,7 @@
 # TODO
 
 * Refactor rbtree
+	* Never override existing RB-tree nodes
     * Get rid of rb_begin_iterate / rb_iterate, keep only new interface
     * Write property tests
 		* (Only left-right and right-left walk) Nodes are returned in sorted (reverse-sorted) order
