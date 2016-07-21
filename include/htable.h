@@ -14,8 +14,8 @@ typedef struct HTableNodeData
 
 typedef HTableNodeData* HTableNode;
 
-typedef bool (*htable_keyeq_func) (const HTableNode a, const HTableNode b, void *arg);
 typedef uint32_t (*htable_hash_func) (const HTableNode a, void *arg);
+typedef bool (*htable_keyeq_func) (const HTableNode a, const HTableNode b, void *arg);
 typedef void* (*htable_alloc_func) (size_t size, void *arg);
 typedef void (*htable_free_func) (void* mem, void *arg);
 typedef void (*htable_before_node_free_func) (HTableNode node, void *arg);
