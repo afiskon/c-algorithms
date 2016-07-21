@@ -56,4 +56,4 @@ extern HTableNode htable_get(HTable tbl, HTableNode query);
 extern void htable_put(HTable tbl, HTableNode node, bool* isNewNode);
 extern bool htable_delete(HTable tbl, HTableNode query);
 
-#define htable_nitems(tbl) (tbl->nitems)
+#define htable_nitems(tbl) ((tbl)->nitems)
