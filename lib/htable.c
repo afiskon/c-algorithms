@@ -13,7 +13,7 @@
 #define MIN_HTABLE_SIZE (1 << 3)
 
 static void
-_htable_resize(HTable tbl)
+_htable_resize(HTable* tbl)
 {
 	HTableNode **new_items;
 	HTableNode *curr_item, *prev_item, *temp_item;
@@ -118,7 +118,7 @@ htable_default_hash(const char *key, const size_t key_len)
 
 void
 htable_create(
-	HTable tbl,
+	HTable* tbl,
 	size_t node_size,
 	htable_hash_func hfunc,
 	htable_keyeq_func eqfunc,
@@ -145,7 +145,7 @@ htable_create(
 }
 
 void
-htable_free_items(HTable tbl)
+htable_free_items(HTable* tbl)
 {
 	size_t item_idx;
 	HTableNode *curr_item, *next_item;
@@ -166,7 +166,7 @@ htable_free_items(HTable tbl)
 }
 
 HTableNode*
-htable_get(HTable tbl, HTableNode* query)
+htable_get(HTable* tbl, HTableNode* query)
 {
 	uint32_t hash = tbl->hfunc(query, tbl->arg);
 	HTableNode* curr_item = tbl->items[hash & tbl->mask];
@@ -182,7 +182,7 @@ htable_get(HTable tbl, HTableNode* query)
 }
 
 void
-htable_put(HTable tbl, HTableNode* node, bool* isNewNode)
+htable_put(HTable* tbl, HTableNode* node, bool* isNewNode)
 {
 	uint32_t hash = tbl->hfunc(node, tbl->arg);
 	HTableNode* item = tbl->items[hash & tbl->mask];
@@ -220,7 +220,7 @@ htable_put(HTable tbl, HTableNode* node, bool* isNewNode)
 }
 
 bool
-htable_delete(HTable tbl, HTableNode* query)
+htable_delete(HTable* tbl, HTableNode* query)
 {
 	uint32_t hash = tbl->hfunc(query, tbl->arg);
 	HTableNode* item = tbl->items[hash & tbl->mask];

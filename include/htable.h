@@ -34,13 +34,11 @@ typedef struct {
 	htable_free_func freefunc;
 	htable_before_node_free_func bnffunc;
 	void* arg;
-} HTableData;
-
-typedef HTableData* HTable;
+} HTable;
 
 extern uint32_t htable_default_hash(const char *key, const size_t key_len);
 extern void htable_create(
-		HTable tbl,
+		HTable* tbl,
 		size_t node_size,
 		htable_hash_func hfunc,
 		htable_keyeq_func eqfunc,
@@ -49,9 +47,9 @@ extern void htable_create(
 		htable_before_node_free_func bnffunc,
 		void* arg
 	);
-extern void htable_free_items(HTable tbl);
-extern HTableNode* htable_get(HTable tbl, HTableNode* query);
-extern void htable_put(HTable tbl, HTableNode* node, bool* isNewNode);
-extern bool htable_delete(HTable tbl, HTableNode* query);
+extern void htable_free_items(HTable* tbl);
+extern HTableNode* htable_get(HTable* tbl, HTableNode* query);
+extern void htable_put(HTable* tbl, HTableNode* node, bool* isNewNode);
+extern bool htable_delete(HTable* tbl, HTableNode* query);
 
 #define htable_nitems(tbl) ((tbl)->nitems)
