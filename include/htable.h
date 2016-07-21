@@ -12,6 +12,7 @@ typedef struct HTableNodeData
 	uint32_t hash;					/* hash function value */
 } HTableNodeData;
 
+/* it's error prone to have both HTableNodeData and HTableNode - consider to use only HTableNodeData */
 typedef HTableNodeData* HTableNode;
 
 typedef uint32_t (*htable_hash_func) (const HTableNode a, void *arg);

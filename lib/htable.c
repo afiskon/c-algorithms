@@ -202,12 +202,12 @@ htable_put(HTable tbl, HTableNode node, bool* isNewNode)
 		}
 		item = item->next;
 	}
- 
+
 	/* key is not used yet, add new node */
 	item = tbl->allocfunc(tbl->node_size, tbl->arg);
 	if(item == NULL)
 		return;
-	
+
 	memcpy(item, node, tbl->node_size);
 
 	item->hash = hash;
