@@ -10,7 +10,6 @@
 	* Join LeftRightWalk and RightLeftWalk to the single structure
 	* Make sure that changing walk direction from left-right to right-left works well
 	* Implement search by part of the key: find_by_partial_key_march(rb, rb_comparator, void* arg)
-* Add hash table implementation based on https://github.com/afiskon/c-hash-tables + write tests
 * Add array-bases queue implementation (fifo)
 * Add in-memory B-tree implementation
 * Add benchmarks. Figure out what rbtree iteration is fastest (on integer keys)

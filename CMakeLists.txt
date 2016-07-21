@@ -4,4 +4,4 @@ project(c-algorithms)
 
 include_directories(include)
 
-add_library(CAlgorithms STATIC lib/ilist.c lib/rbtree.c)
+add_library(CAlgorithms STATIC lib/ilist.c lib/rbtree.c lib/htable.c)
