@@ -1,6 +1,5 @@
 # TODO
 
-* Refactor htable: get rid of HTableNodeData, use only HTableNode name
 * Refactor rbtree
 	* Never override existing RB-tree nodes (see rbtree.c:593)
     * Get rid of rb_begin_iterate / rb_iterate, keep only new interface

@@ -15,8 +15,8 @@
 static void
 _htable_resize(HTable tbl)
 {
-	HTableNode* new_items;
-	HTableNode curr_item, prev_item, temp_item;
+	HTableNode **new_items;
+	HTableNode *curr_item, *prev_item, *temp_item;
 	size_t item_idx, new_size = tbl->size;
 	uint32_t new_mask;
 
@@ -27,14 +27,14 @@ _htable_resize(HTable tbl)
 	{
 		new_size = tbl->size * 2;
 		new_mask = new_size - 1;
-		new_items = tbl->allocfunc(sizeof(HTableNode) * new_size, tbl->arg);
+		new_items = tbl->allocfunc(sizeof(HTableNode*) * new_size, tbl->arg);
 		if(new_items == NULL)
 			return;
 
 		/* just copy first part of the `items` table */
-		memcpy(new_items, tbl->items, tbl->size * sizeof(HTableNode));
+		memcpy(new_items, tbl->items, tbl->size * sizeof(HTableNode*));
 		/* second part fill with zeros for now */
-		memset(&new_items[tbl->size], 0, tbl->size * sizeof(HTableNode));
+		memset(&new_items[tbl->size], 0, tbl->size * sizeof(HTableNode*));
 
 		for(item_idx = 0; item_idx < tbl->size; item_idx++)
 		{
@@ -66,11 +66,11 @@ _htable_resize(HTable tbl)
 	{
 		new_size = tbl->size / 2;
 		new_mask = new_size - 1;
-		new_items = tbl->allocfunc(sizeof(HTableNode) * new_size, tbl->arg);
+		new_items = tbl->allocfunc(sizeof(HTableNode*) * new_size, tbl->arg);
 		if(new_items == NULL)
 			return;
 
-		memcpy(new_items, tbl->items, new_size * sizeof(HTableNode));
+		memcpy(new_items, tbl->items, new_size * sizeof(HTableNode*));
 		for(item_idx = new_size; item_idx < tbl->size; item_idx++)
 		{
 			if(tbl->items[item_idx] == NULL)
@@ -138,7 +138,7 @@ htable_create(
 	tbl->bnffunc = bnffunc;
 	tbl->arg = arg;
 
-	tbl->items = (HTableNode*)tbl->allocfunc(sizeof(HTableNode) * tbl->size, tbl->arg);
+	tbl->items = (HTableNode**)tbl->allocfunc(sizeof(HTableNode*) * tbl->size, tbl->arg);
 	if(tbl->items == NULL)
 		return;
 	memset(tbl->items, 0, sizeof(void*) * tbl->size);
@@ -148,7 +148,7 @@ void
 htable_free_items(HTable tbl)
 {
 	size_t item_idx;
-	HTableNode curr_item, next_item;
+	HTableNode *curr_item, *next_item;
 
 	for(item_idx = 0; item_idx < tbl->size; item_idx++)
 	{
@@ -165,11 +165,11 @@ htable_free_items(HTable tbl)
 	tbl->freefunc(tbl->items, tbl->arg);
 }
 
-HTableNode
-htable_get(HTable tbl, HTableNode query)
+HTableNode*
+htable_get(HTable tbl, HTableNode* query)
 {
 	uint32_t hash = tbl->hfunc(query, tbl->arg);
-	HTableNode curr_item = tbl->items[hash & tbl->mask];
+	HTableNode* curr_item = tbl->items[hash & tbl->mask];
 
 	while(curr_item)
 	{
@@ -182,17 +182,17 @@ htable_get(HTable tbl, HTableNode query)
 }
 
 void
-htable_put(HTable tbl, HTableNode node, bool* isNewNode)
+htable_put(HTable tbl, HTableNode* node, bool* isNewNode)
 {
 	uint32_t hash = tbl->hfunc(node, tbl->arg);
-	HTableNode item = tbl->items[hash & tbl->mask];
+	HTableNode* item = tbl->items[hash & tbl->mask];
 
 	/* if such a key is already used, update node */
 	while(item)
 	{
 		if(tbl->eqfunc(item, node, tbl->arg))
 		{
-			HTableNode savedNext = item->next;
+			HTableNode* savedNext = item->next;
 			tbl->bnffunc(item, tbl->arg);
 			memcpy(item, node, tbl->node_size);
 			item->next = savedNext;
@@ -220,11 +220,11 @@ htable_put(HTable tbl, HTableNode node, bool* isNewNode)
 }
 
 bool
-htable_delete(HTable tbl, HTableNode query)
+htable_delete(HTable tbl, HTableNode* query)
 {
 	uint32_t hash = tbl->hfunc(query, tbl->arg);
-	HTableNode item = tbl->items[hash & tbl->mask];
-	HTableNode prev = NULL;
+	HTableNode* item = tbl->items[hash & tbl->mask];
+	HTableNode* prev = NULL;
 
 	while(item)
 	{
