@@ -167,7 +167,7 @@ htable_free_items(HTable* tbl)
 }
 
 HTableNode*
-htable_get(HTable* tbl, HTableNode* query)
+htable_find(HTable* tbl, HTableNode* query)
 {
 	uint32_t hash = tbl->hfunc(query, tbl->arg);
 	HTableNode* curr_item = tbl->items[hash & tbl->mask];
@@ -183,7 +183,7 @@ htable_get(HTable* tbl, HTableNode* query)
 }
 
 void
-htable_put(HTable* tbl, HTableNode* node, bool* isNewNode)
+htable_insert(HTable* tbl, HTableNode* node, bool* isNewNode)
 {
 	uint32_t hash = tbl->hfunc(node, tbl->arg);
 	HTableNode* item = tbl->items[hash & tbl->mask];
