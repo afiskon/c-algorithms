@@ -12,4 +12,5 @@
 	* Implement search by part of the key: find_by_partial_key_march(rb, rb_comparator, void* arg)
 * Add array-bases queue implementation (fifo)
 * Add in-memory B-tree implementation
+* Add scapegoat tree implementation https://github.com/delamonpansie/octopus/blob/master/third_party/sptree.h#L331
 * Add benchmarks. Figure out what rbtree iteration is fastest (on integer keys)
