@@ -156,7 +156,8 @@ htable_free_items(HTable* tbl)
 		while(curr_item)
 		{
 			next_item = curr_item->next;
-			tbl->bnffunc(curr_item, tbl->arg);
+			if(tbl->bnffunc)
+				tbl->bnffunc(curr_item, tbl->arg);
 			tbl->freefunc(curr_item, tbl->arg);
 			curr_item = next_item;
 		}
@@ -193,7 +194,8 @@ htable_put(HTable* tbl, HTableNode* node, bool* isNewNode)
 		if(tbl->eqfunc(item, node, tbl->arg))
 		{
 			HTableNode* savedNext = item->next;
-			tbl->bnffunc(item, tbl->arg);
+			if(tbl->bnffunc)
+				tbl->bnffunc(item, tbl->arg);
 			memcpy(item, node, tbl->node_size);
 			item->next = savedNext;
 			item->hash = hash;
@@ -235,7 +237,8 @@ htable_delete(HTable* tbl, HTableNode* query)
 			else
 				tbl->items[hash & tbl->mask] = item->next;
 
-			tbl->bnffunc(item, tbl->arg);
+			if(tbl->bnffunc)
+				tbl->bnffunc(item, tbl->arg);
 			tbl->freefunc(item, tbl->arg);
 			tbl->nitems--;
 			_htable_resize(tbl);
