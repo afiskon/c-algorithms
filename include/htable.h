@@ -1,7 +1,7 @@
 /*
-  htable.h
-  (c) Alexandr A Alexeev 2011-2016 | http://eax.me/
-*/
+ * htable.h
+ * (c) Alexandr A Alexeev 2011-2016 | http://eax.me/
+ */
 
 #include <stdint.h>
 #include <stdbool.h>
