@@ -407,6 +407,8 @@ rb_insert(RBTree *rb, const RBNode *data, bool *isNew)
 	*isNew = true;
 
 	x = rb->allocfunc (rb->arg);
+	if(x == NULL)
+		return NULL;
 
 	x->iteratorState = InitialState;
 	x->color = RBRED;
