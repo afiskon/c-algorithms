@@ -1134,7 +1134,7 @@ rb_tree_debug_print(RBTree* rb, rb_sprintfunc sprintfunc)
 			break;
 		sprintfunc(node, buff);
 		printf("nodes['%p'] = {'parent':'%p','left':'%p','right':'%p','color':'%s','data':'%s'}\n",
-			node, node->parent, node->left == RBNIL ? NULL : node->left, node->right == RBNIL ? NULL : node->right,
+			(void*)node, (void*)node->parent, (void*)(node->left == RBNIL ? NULL : node->left), (void*)(node->right == RBNIL ? NULL : node->right),
 			node->color == RBBLACK ? "black" : "red", buff);
 	}
 }
