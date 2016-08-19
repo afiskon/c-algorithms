@@ -102,23 +102,9 @@ general_test()
 	assert(rb_leftmost(&tree) == NULL);
 }
 
-/* Make sure left right walk returns item in sorted order */
-static void
-left_right_walk_sorting_test()
-{
-	/* TODO */
-}
-
-/* Make sure right left walk returns item in revere sorted order */
-static void
-right_left_walk_sorting_test()
-{
-	/* TODO */
-}
-
 /*
  * Make sure left right walk enumirates all items, and any item is returned
- * only once
+ * only once. Also make sure left right walk returns item in sorted order.
  */
 static void
 left_right_walk_test()
@@ -130,7 +116,7 @@ left_right_walk_test()
 	RBTreeLeftRightWalk lrw;
 	bool number_returned[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int unique_numbers[UNIQUE_NUMBERS_ARRAY_SIZE];
-	int i, j, temp, nitems;
+	int i, j, temp, nitems, last_item;
 
 	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
 	{
@@ -152,22 +138,29 @@ left_right_walk_test()
 
 	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
 	{
-		sprintf(item.data, "Item %x", unique_numbers[i]);
+		sprintf(item.data, "Item %08x", unique_numbers[i]);
 		rb_insert(&tree, (RBNode*)&item, &isNew);
 		assert(isNew);
 	}
 
 	/* check enumiration */
 	nitems = 0;
+	last_item = -1;
 	rb_begin_left_right_walk(&tree, &lrw);
 	while( (tmp = (TreeItem)rb_left_right_walk(&lrw)) )
 	{
-		sscanf(tmp->data, "Item %x", &i);
+		sscanf(tmp->data, "Item %08x", &i);
+
 		assert(number_returned[i] == false);
 		number_returned[i] = true;
+
+		assert(last_item < i);
+		last_item = i;
+
 		nitems++;
 	}
 	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+	assert(last_item == (UNIQUE_NUMBERS_ARRAY_SIZE-1));
 
 	/* free memory */
 	nitems = 0;
@@ -181,7 +174,8 @@ left_right_walk_test()
 
 /*
  * Make sure right left walk enumirates all items, and any item is returned
- * only once
+ * only once. Also make sure right left walk returns item in revere sorted
+ * order. (TODO)
  */
 static void
 right_left_walk_test()
@@ -215,7 +209,7 @@ right_left_walk_test()
 
 	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
 	{
-		sprintf(item.data, "Item %x", unique_numbers[i]);
+		sprintf(item.data, "Item %08x", unique_numbers[i]);
 		rb_insert(&tree, (RBNode*)&item, &isNew);
 		assert(isNew);
 	}
@@ -225,7 +219,7 @@ right_left_walk_test()
 	rb_begin_right_left_walk(&tree, &rlw);
 	while( (tmp = (TreeItem)rb_right_left_walk(&rlw)) )
 	{
-		sscanf(tmp->data, "Item %x", &i);
+		sscanf(tmp->data, "Item %08x", &i);
 		assert(number_returned[i] == false);
 		number_returned[i] = true;
 		nitems++;
@@ -278,7 +272,7 @@ direct_walk_test()
 
 	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
 	{
-		sprintf(item.data, "Item %x", unique_numbers[i]);
+		sprintf(item.data, "Item %08x", unique_numbers[i]);
 		rb_insert(&tree, (RBNode*)&item, &isNew);
 		assert(isNew);
 	}
@@ -288,7 +282,7 @@ direct_walk_test()
 	rb_begin_direct_walk(&tree, &dw);
 	while( (tmp = (TreeItem)rb_direct_walk(&dw)) )
 	{
-		sscanf(tmp->data, "Item %x", &i);
+		sscanf(tmp->data, "Item %08x", &i);
 		assert(number_returned[i] == false);
 		number_returned[i] = true;
 		nitems++;
@@ -341,7 +335,7 @@ inverted_walk_test()
 
 	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
 	{
-		sprintf(item.data, "Item %x", unique_numbers[i]);
+		sprintf(item.data, "Item %08x", unique_numbers[i]);
 		rb_insert(&tree, (RBNode*)&item, &isNew);
 		assert(isNew);
 	}
@@ -351,7 +345,7 @@ inverted_walk_test()
 	rb_begin_inverted_walk(&tree, &iw);
 	while( (tmp = (TreeItem)rb_inverted_walk(&iw)) )
 	{
-		sscanf(tmp->data, "Item %x", &i);
+		sscanf(tmp->data, "Item %08x", &i);
 		assert(number_returned[i] == false);
 		number_returned[i] = true;
 		nitems++;
@@ -378,9 +372,6 @@ int main()
 	srand(0);
 
 	general_test();
-
-	left_right_walk_sorting_test();
-	right_left_walk_sorting_test();
 
 	left_right_walk_test();
 	right_left_walk_test();
