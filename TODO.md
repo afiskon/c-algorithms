@@ -5,6 +5,7 @@
 	* After removing old interface: Make corresponding changes to the blog post
 	* Make sure that changing walk direction from left-right to right-left works well
 	* Implement search by part of the key: find\_by\_partial\_key\_march(rb, rb\_comparator, void\* arg)
+* Add LRU/LFU cache examples to https://github.com/afiskon/c-algorithms-examples
 * Add array-bases queue implementation (fifo)
 * Add in-memory B-tree implementation
 * Add scapegoat tree implementation https://github.com/delamonpansie/octopus/blob/master/third_party/sptree.h#L331
