@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include "htable.h"
 
-#define N 1
+#define N 100
 
 typedef struct
 {
@@ -115,8 +115,7 @@ int main()
 			NULL
 		);
 
-	for(i = 0; i < 100; i++)
-		run_test(&htable_data);
+	run_test(&htable_data);
 
 	return 0;
 }
