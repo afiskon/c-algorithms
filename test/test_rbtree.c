@@ -249,7 +249,61 @@ right_left_walk_test()
 static void
 direct_walk_test()
 {
-	/* TODO */
+	RBTree tree;
+	bool isNew;
+	TreeItemData item;
+	TreeItem tmp;
+	RBTreeDirectWalk dw;
+	bool number_returned[UNIQUE_NUMBERS_ARRAY_SIZE];
+	int unique_numbers[UNIQUE_NUMBERS_ARRAY_SIZE];
+	int i, j, temp, nitems;
+
+	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	{
+		unique_numbers[i] = i;
+		number_returned[i] = false;
+	}
+
+	/* shuffle numbers */
+	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	{
+		j = (int)((((double)rand()) / ((double)RAND_MAX)) * UNIQUE_NUMBERS_ARRAY_SIZE);
+		temp = unique_numbers[i];
+		unique_numbers[i] = unique_numbers[j];
+		unique_numbers[j] = temp;
+	}
+
+	/* create and fill a tree */
+	rb_create(&tree, sizeof(TreeItemData), tree_comparator, tree_combiner, tree_allocfunc, tree_freefunc, NULL);
+
+	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	{
+		sprintf(item.data, "Item %x", unique_numbers[i]);
+		rb_insert(&tree, (RBNode*)&item, &isNew);
+		assert(isNew);
+	}
+
+	/* check enumiration */
+	nitems = 0;
+	rb_begin_direct_walk(&tree, &dw);
+	while( (tmp = (TreeItem)rb_direct_walk(&dw)) )
+	{
+		sscanf(tmp->data, "Item %x", &i);
+		assert(number_returned[i] == false);
+		number_returned[i] = true;
+		nitems++;
+	}
+	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+
+	/* free memory */
+	nitems = 0;
+	while( (tmp = (TreeItem)rb_leftmost(&tree)) )
+	{
+		rb_delete(&tree, (RBNode*)tmp);
+		nitems++;
+	}
+	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+
 }
 
 /*
