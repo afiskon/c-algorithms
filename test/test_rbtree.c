@@ -175,7 +175,7 @@ left_right_walk_test()
 /*
  * Make sure right left walk enumirates all items, and any item is returned
  * only once. Also make sure right left walk returns item in revere sorted
- * order. (TODO)
+ * order.
  */
 static void
 right_left_walk_test()
@@ -187,7 +187,7 @@ right_left_walk_test()
 	RBTreeRightLeftWalk rlw;
 	bool number_returned[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int unique_numbers[UNIQUE_NUMBERS_ARRAY_SIZE];
-	int i, j, temp, nitems;
+	int i, j, temp, nitems, last_item;
 
 	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
 	{
@@ -216,15 +216,22 @@ right_left_walk_test()
 
 	/* check enumiration */
 	nitems = 0;
+	last_item = UNIQUE_NUMBERS_ARRAY_SIZE;
 	rb_begin_right_left_walk(&tree, &rlw);
 	while( (tmp = (TreeItem)rb_right_left_walk(&rlw)) )
 	{
 		sscanf(tmp->data, "Item %08x", &i);
+
 		assert(number_returned[i] == false);
 		number_returned[i] = true;
+
+		assert(last_item > i);
+		last_item = i;
+
 		nitems++;
 	}
 	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+	assert(last_item == 0);
 
 	/* free memory */
 	nitems = 0;
