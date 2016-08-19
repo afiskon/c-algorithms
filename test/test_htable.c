@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include "htable.h"
 
-#define N 100
+#define N 1
 
 typedef struct
 {
