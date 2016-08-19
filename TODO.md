@@ -14,5 +14,6 @@
 * Add in-memory B-tree implementation
 * Add scapegoat tree implementation https://github.com/delamonpansie/octopus/blob/master/third_party/sptree.h#L331
 * Add benchmarks. Figure out what rbtree iteration is fastest (on integer keys)
+* Make code _at_ _least_ 97% test covered
 * Check using Clang Static Analyzer and CppCheck
 * Check using MemorySanitizer and probably other sanitizers
