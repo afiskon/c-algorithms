@@ -27,7 +27,6 @@
  */
 typedef struct RBNode
 {
-	char		iteratorState;	/* workspace for iterating through tree */
 	char color;					/* node's current color, red or black */
 	struct RBNode *left;		/* left child, or RBNIL if none */
 	struct RBNode *right;		/* right child, or RBNIL if none */
@@ -50,10 +49,6 @@ struct RBTree
 {
 	RBNode	   *root;			/* root node, or RBNIL if tree is empty */
 
-	/* Iteration state */
-	RBNode	   *cur;			/* current iteration node */
-	RBNode	   *(*iterate) (RBTree *rb);
-
 	/* Remaining fields are constant after rb_create */
 
 	size_t		node_size;		/* actual size of tree nodes */
@@ -65,15 +60,6 @@ struct RBTree
 	/* Passthrough arg passed to all manipulation functions */
 	void	   *arg;
 };
-
-/* Available tree iteration orderings */
-typedef enum RBOrderControl
-{
-	LeftRightWalk,				/* inorder: left child, node, right child */
-	RightLeftWalk,				/* reverse inorder: right, node, left */
-	DirectWalk,					/* preorder: node, left child, right child */
-	InvertedWalk				/* postorder: left child, right child, node */
-} RBOrderControl;
 
 extern void rb_create(RBTree* tree,
 		  size_t node_size,
@@ -88,9 +74,6 @@ extern RBNode *rb_leftmost(RBTree *rb);
 
 extern RBNode *rb_insert(RBTree *rb, const RBNode *data, bool *isNew);
 extern void rb_delete(RBTree *rb, RBNode *node);
-
-extern void rb_begin_iterate(RBTree *rb, RBOrderControl ctrl);
-extern RBNode *rb_iterate(RBTree *rb);
 
 extern void rb_tree_debug_print(RBTree* rb, rb_sprintfunc sprintfunc);
 
@@ -142,6 +125,5 @@ typedef struct
 
 extern void rb_begin_inverted_walk(RBTree *rb, RBTreeInvertedWalk* dw);
 extern RBNode* rb_inverted_walk(RBTreeInvertedWalk* dw);
-
 
 #endif   /* RBTREE_H */

@@ -29,17 +29,6 @@
 #include <assert.h>
 
 /*
- * Values of RBNode.iteratorState
- *
- * Note that iteratorState has an undefined value except in nodes that are
- * currently being visited by an active iteration.
- */
-#define InitialState	(0)
-#define FirstStepDone	(1)
-#define SecondStepDone	(2)
-#define ThirdStepDone	(3)
-
-/*
  * Colors of nodes (values of RBNode.color)
  */
 #define RBBLACK		(0)
@@ -51,7 +40,7 @@
  */
 #define RBNIL (&sentinel)
 
-static RBNode sentinel = {InitialState, RBBLACK, RBNIL, RBNIL, NULL};
+static RBNode sentinel = {RBBLACK, RBNIL, RBNIL, NULL};
 
 
 /*
@@ -96,8 +85,6 @@ rb_create(RBTree *tree,
 	assert(node_size > sizeof(RBNode));
 
 	tree->root = RBNIL;
-	tree->cur = RBNIL;
-	tree->iterate = NULL;
 	tree->node_size = node_size;
 	tree->comparator = comparator;
 	tree->combiner = combiner;
@@ -410,7 +397,6 @@ rb_insert(RBTree *rb, const RBNode *data, bool *isNew)
 	if(x == NULL)
 		return NULL;
 
-	x->iteratorState = InitialState;
 	x->color = RBRED;
 
 	x->left = RBNIL;
@@ -625,225 +611,6 @@ rb_delete(RBTree *rb, RBNode *node)
 /**********************************************************************
  *						  Traverse									  *
  **********************************************************************/
-
-/*
- * The iterator routines were originally coded in tail-recursion style,
- * which is nice to look at, but is trouble if your compiler isn't smart
- * enough to optimize it.  Now we just use looping.
- */
-#define descend(next_node) \
-	do { \
-		(next_node)->iteratorState = InitialState; \
-		node = rb->cur = (next_node); \
-		goto restart; \
-	} while (0)
-
-#define ascend(next_node) \
-	do { \
-		node = rb->cur = (next_node); \
-		goto restart; \
-	} while (0)
-
-
-static RBNode *
-rb_left_right_iterator(RBTree *rb)
-{
-	RBNode	   *node = rb->cur;
-
-restart:
-	switch (node->iteratorState)
-	{
-		case InitialState:
-			if (node->left != RBNIL)
-			{
-				node->iteratorState = FirstStepDone;
-				descend(node->left);
-			}
-			/* FALL THROUGH */
-		case FirstStepDone:
-			node->iteratorState = SecondStepDone;
-			return node;
-		case SecondStepDone:
-			if (node->right != RBNIL)
-			{
-				node->iteratorState = ThirdStepDone;
-				descend(node->right);
-			}
-			/* FALL THROUGH */
-		case ThirdStepDone:
-			if (node->parent)
-				ascend(node->parent);
-			break;
-		default:
-			fprintf(stderr, "unrecognized rbtree node state: %d\n",
-				 node->iteratorState);
-			exit(1);
-	}
-
-	return NULL;
-}
-
-static RBNode *
-rb_right_left_iterator(RBTree *rb)
-{
-	RBNode	   *node = rb->cur;
-
-restart:
-	switch (node->iteratorState)
-	{
-		case InitialState:
-			if (node->right != RBNIL)
-			{
-				node->iteratorState = FirstStepDone;
-				descend(node->right);
-			}
-			/* FALL THROUGH */
-		case FirstStepDone:
-			node->iteratorState = SecondStepDone;
-			return node;
-		case SecondStepDone:
-			if (node->left != RBNIL)
-			{
-				node->iteratorState = ThirdStepDone;
-				descend(node->left);
-			}
-			/* FALL THROUGH */
-		case ThirdStepDone:
-			if (node->parent)
-				ascend(node->parent);
-			break;
-		default:
-			fprintf(stderr, "unrecognized rbtree node state: %d\n",
-				 node->iteratorState);
-			exit(1);
-	}
-
-	return NULL;
-}
-
-static RBNode *
-rb_direct_iterator(RBTree *rb)
-{
-	RBNode	   *node = rb->cur;
-
-restart:
-	switch (node->iteratorState)
-	{
-		case InitialState:
-			node->iteratorState = FirstStepDone;
-			return node;
-		case FirstStepDone:
-			if (node->left != RBNIL)
-			{
-				node->iteratorState = SecondStepDone;
-				descend(node->left);
-			}
-			/* FALL THROUGH */
-		case SecondStepDone:
-			if (node->right != RBNIL)
-			{
-				node->iteratorState = ThirdStepDone;
-				descend(node->right);
-			}
-			/* FALL THROUGH */
-		case ThirdStepDone:
-			if (node->parent)
-				ascend(node->parent);
-			break;
-		default:
-			fprintf(stderr, "unrecognized rbtree node state: %d\n",
-				 node->iteratorState);
-			exit(1);
-	}
-
-	return NULL;
-}
-
-static RBNode *
-rb_inverted_iterator(RBTree *rb)
-{
-	RBNode	   *node = rb->cur;
-
-restart:
-	switch (node->iteratorState)
-	{
-		case InitialState:
-			if (node->left != RBNIL)
-			{
-				node->iteratorState = FirstStepDone;
-				descend(node->left);
-			}
-			/* FALL THROUGH */
-		case FirstStepDone:
-			if (node->right != RBNIL)
-			{
-				node->iteratorState = SecondStepDone;
-				descend(node->right);
-			}
-			/* FALL THROUGH */
-		case SecondStepDone:
-			node->iteratorState = ThirdStepDone;
-			return node;
-		case ThirdStepDone:
-			if (node->parent)
-				ascend(node->parent);
-			break;
-		default:
-			fprintf(stderr, "unrecognized rbtree node state: %d\n",
-				 node->iteratorState);
-			exit(1);
-	}
-
-	return NULL;
-}
-
-/*
- * rb_begin_iterate: prepare to traverse the tree in any of several orders
- *
- * After calling rb_begin_iterate, call rb_iterate repeatedly until it
- * returns NULL or the traversal stops being of interest.
- *
- * If the tree is changed during traversal, results of further calls to
- * rb_iterate are unspecified.
- */
-void
-rb_begin_iterate(RBTree *rb, RBOrderControl ctrl)
-{
-	rb->cur = rb->root;
-	if (rb->cur != RBNIL)
-		rb->cur->iteratorState = InitialState;
-
-	switch (ctrl)
-	{
-		case LeftRightWalk:		/* visit left, then self, then right */
-			rb->iterate = rb_left_right_iterator;
-			break;
-		case RightLeftWalk:		/* visit right, then self, then left */
-			rb->iterate = rb_right_left_iterator;
-			break;
-		case DirectWalk:		/* visit self, then left, then right */
-			rb->iterate = rb_direct_iterator;
-			break;
-		case InvertedWalk:		/* visit left, then right, then self */
-			rb->iterate = rb_inverted_iterator;
-			break;
-		default:
-			fprintf(stderr, "unrecognized rbtree iteration order: %d\n", ctrl);
-			exit(1);
-	}
-}
-
-/*
- * rb_iterate: return the next node in traversal order, or NULL if no more
- */
-RBNode *
-rb_iterate(RBTree *rb)
-{
-	if (rb->cur == RBNIL)
-		return NULL;
-
-	return rb->iterate(rb);
-}
 
 /*
  * Begin left right walk.
@@ -1138,5 +905,4 @@ rb_tree_debug_print(RBTree* rb, rb_sprintfunc sprintfunc)
 			node->color == RBBLACK ? "black" : "red", buff);
 	}
 }
-
 
