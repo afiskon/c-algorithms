@@ -118,7 +118,5 @@ int main()
 	for(i = 0; i < 100; i++)
 		run_test(&htable_data);
 
-	printf("OK!\n");
-
 	return 0;
 }
