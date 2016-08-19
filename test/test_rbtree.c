@@ -7,7 +7,8 @@
 #include <sys/time.h>
 #include "rbtree.h"
 
-#define UNIQUE_NUMBERS_ARRAY_SIZE 777
+/* #define INIFNITE_TEST */
+#define UNIQUE_NUMBERS_ARRAY_SIZE 7777
 
 typedef struct
 {
@@ -117,17 +118,23 @@ left_right_walk_test()
 	bool number_returned[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int unique_numbers[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int i, j, temp, nitems, last_item;
+	int array_size = UNIQUE_NUMBERS_ARRAY_SIZE;
 
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+#ifdef INIFNITE_TEST
+	array_size = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+#endif
+
+	for(i = 0; i < array_size; i++)
 	{
 		unique_numbers[i] = i;
 		number_returned[i] = false;
 	}
 
 	/* shuffle numbers */
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	for(i = 0; i < array_size; i++)
 	{
-		j = (int)((((double)rand()) / ((double)RAND_MAX)) * UNIQUE_NUMBERS_ARRAY_SIZE);
+		j = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+		assert((j >= 0) && (j < array_size));
 		temp = unique_numbers[i];
 		unique_numbers[i] = unique_numbers[j];
 		unique_numbers[j] = temp;
@@ -136,7 +143,7 @@ left_right_walk_test()
 	/* create and fill a tree */
 	rb_create(&tree, sizeof(TreeItemData), tree_comparator, tree_combiner, tree_allocfunc, tree_freefunc, NULL);
 
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	for(i = 0; i < array_size; i++)
 	{
 		sprintf(item.data, "Item %08x", unique_numbers[i]);
 		rb_insert(&tree, (RBNode*)&item, &isNew);
@@ -159,8 +166,8 @@ left_right_walk_test()
 
 		nitems++;
 	}
-	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
-	assert(last_item == (UNIQUE_NUMBERS_ARRAY_SIZE-1));
+	assert(nitems == array_size);
+	assert(last_item == (array_size-1));
 
 	/* free memory */
 	nitems = 0;
@@ -169,7 +176,7 @@ left_right_walk_test()
 		rb_delete(&tree, (RBNode*)tmp);
 		nitems++;
 	}
-	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+	assert(nitems == array_size);
 }
 
 /*
@@ -188,17 +195,23 @@ right_left_walk_test()
 	bool number_returned[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int unique_numbers[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int i, j, temp, nitems, last_item;
+	int array_size = UNIQUE_NUMBERS_ARRAY_SIZE;
 
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+#ifdef INIFNITE_TEST
+	array_size = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+#endif
+
+	for(i = 0; i < array_size; i++)
 	{
 		unique_numbers[i] = i;
 		number_returned[i] = false;
 	}
 
 	/* shuffle numbers */
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	for(i = 0; i < array_size; i++)
 	{
-		j = (int)((((double)rand()) / ((double)RAND_MAX)) * UNIQUE_NUMBERS_ARRAY_SIZE);
+		j = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+		assert((j >= 0) && (j < array_size));
 		temp = unique_numbers[i];
 		unique_numbers[i] = unique_numbers[j];
 		unique_numbers[j] = temp;
@@ -207,7 +220,7 @@ right_left_walk_test()
 	/* create and fill a tree */
 	rb_create(&tree, sizeof(TreeItemData), tree_comparator, tree_combiner, tree_allocfunc, tree_freefunc, NULL);
 
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	for(i = 0; i < array_size; i++)
 	{
 		sprintf(item.data, "Item %08x", unique_numbers[i]);
 		rb_insert(&tree, (RBNode*)&item, &isNew);
@@ -216,7 +229,7 @@ right_left_walk_test()
 
 	/* check enumiration */
 	nitems = 0;
-	last_item = UNIQUE_NUMBERS_ARRAY_SIZE;
+	last_item = array_size;
 	rb_begin_right_left_walk(&tree, &rlw);
 	while( (tmp = (TreeItem)rb_right_left_walk(&rlw)) )
 	{
@@ -230,7 +243,7 @@ right_left_walk_test()
 
 		nitems++;
 	}
-	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+	assert(nitems == array_size);
 	assert(last_item == 0);
 
 	/* free memory */
@@ -240,7 +253,7 @@ right_left_walk_test()
 		rb_delete(&tree, (RBNode*)tmp);
 		nitems++;
 	}
-	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+	assert(nitems == array_size);
 }
 
 /*
@@ -258,17 +271,23 @@ direct_walk_test()
 	bool number_returned[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int unique_numbers[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int i, j, temp, nitems;
+	int array_size = UNIQUE_NUMBERS_ARRAY_SIZE;
 
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+#ifdef INIFNITE_TEST
+	array_size = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+#endif
+
+	for(i = 0; i < array_size; i++)
 	{
 		unique_numbers[i] = i;
 		number_returned[i] = false;
 	}
 
 	/* shuffle numbers */
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	for(i = 0; i < array_size; i++)
 	{
-		j = (int)((((double)rand()) / ((double)RAND_MAX)) * UNIQUE_NUMBERS_ARRAY_SIZE);
+		j = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+		assert((j >= 0) && (j < array_size));
 		temp = unique_numbers[i];
 		unique_numbers[i] = unique_numbers[j];
 		unique_numbers[j] = temp;
@@ -277,7 +296,7 @@ direct_walk_test()
 	/* create and fill a tree */
 	rb_create(&tree, sizeof(TreeItemData), tree_comparator, tree_combiner, tree_allocfunc, tree_freefunc, NULL);
 
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	for(i = 0; i < array_size; i++)
 	{
 		sprintf(item.data, "Item %08x", unique_numbers[i]);
 		rb_insert(&tree, (RBNode*)&item, &isNew);
@@ -294,7 +313,7 @@ direct_walk_test()
 		number_returned[i] = true;
 		nitems++;
 	}
-	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+	assert(nitems == array_size);
 
 	/* free memory */
 	nitems = 0;
@@ -303,7 +322,7 @@ direct_walk_test()
 		rb_delete(&tree, (RBNode*)tmp);
 		nitems++;
 	}
-	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+	assert(nitems == array_size);
 }
 
 /*
@@ -321,17 +340,23 @@ inverted_walk_test()
 	bool number_returned[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int unique_numbers[UNIQUE_NUMBERS_ARRAY_SIZE];
 	int i, j, temp, nitems;
+	int array_size = UNIQUE_NUMBERS_ARRAY_SIZE;
 
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+#ifdef INIFNITE_TEST
+	array_size = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+#endif
+
+	for(i = 0; i < array_size; i++)
 	{
 		unique_numbers[i] = i;
 		number_returned[i] = false;
 	}
 
 	/* shuffle numbers */
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	for(i = 0; i < array_size; i++)
 	{
-		j = (int)((((double)rand()) / ((double)RAND_MAX)) * UNIQUE_NUMBERS_ARRAY_SIZE);
+		j = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+		assert((j >= 0) && (j < array_size));
 		temp = unique_numbers[i];
 		unique_numbers[i] = unique_numbers[j];
 		unique_numbers[j] = temp;
@@ -340,7 +365,7 @@ inverted_walk_test()
 	/* create and fill a tree */
 	rb_create(&tree, sizeof(TreeItemData), tree_comparator, tree_combiner, tree_allocfunc, tree_freefunc, NULL);
 
-	for(i = 0; i < UNIQUE_NUMBERS_ARRAY_SIZE; i++)
+	for(i = 0; i < array_size; i++)
 	{
 		sprintf(item.data, "Item %08x", unique_numbers[i]);
 		rb_insert(&tree, (RBNode*)&item, &isNew);
@@ -357,7 +382,7 @@ inverted_walk_test()
 		number_returned[i] = true;
 		nitems++;
 	}
-	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+	assert(nitems == array_size);
 
 	/* free memory */
 	nitems = 0;
@@ -366,25 +391,42 @@ inverted_walk_test()
 		rb_delete(&tree, (RBNode*)tmp);
 		nitems++;
 	}
-	assert(nitems == UNIQUE_NUMBERS_ARRAY_SIZE);
+	assert(nitems == array_size);
 }
 
-int main()
+void run_tests()
 {
-/*
-	struct timeval  tv;
-	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec ^ tv.tv_usec);
-*/
-	srand(0);
-
 	general_test();
-
 	left_right_walk_test();
 	right_left_walk_test();
 	direct_walk_test();
 	inverted_walk_test();
+}
+
+int main()
+{
+	/*
+	struct timeval  tv;
+	gettimeofday(&tv, NULL);
+	srand(tv.tv_sec ^ tv.tv_usec);
+	*/
+
+	srand(0);
+
+#ifdef INIFNITE_TEST
+	{
+		int i = 0;
+		for(;;) {
+			run_tests();
+			i++;
+			printf("Tests passed: %d\n", i);
+		}
+	}
+#else
+	run_tests();
+#endif
 
 	return 0;
 }
+
 
