@@ -100,25 +100,54 @@ general_test()
 	assert(rb_leftmost(&tree) == NULL);
 }
 
+/* Make sure left right walk returns item in sorted order */
+static void
+left_right_walk_sorting_test()
+{
+	/* TODO */
+}
+
+/* Make sure right left walk returns item in revere sorted order */
+static void
+right_left_walk_sorting_test()
+{
+	/* TODO */
+}
+
+/*
+ * Make sure left right walk enumirates all items, and any item is returned
+ * only once
+ */
 static void
 left_right_walk_test()
 {
 	/* TODO */
 }
 
+/*
+ * Make sure right left walk enumirates all items, and any item is returned
+ * only once
+ */
 static void
 right_left_walk_test()
 {
 	/* TODO */
 }
 
-
+/*
+ * Make sure direct walk enumirates all items, and any item is returned only
+ * once
+ */
 static void
 direct_walk_test()
 {
 	/* TODO */
 }
 
+/*
+ * Make sure inverted walk enumirates all items, and any item is returned only
+ * once
+ */
 static void
 inverted_walk_test()
 {
@@ -135,6 +164,10 @@ int main()
 	srand(0);
 
 	general_test();
+
+	left_right_walk_sorting_test();
+	right_left_walk_sorting_test();
+
 	left_right_walk_test();
 	right_left_walk_test();
 	direct_walk_test();
