@@ -10,7 +10,7 @@ make -j4
 make test
 ```
 
-How to build coverage report:
+How to make a coverage report:
 
 ```
 mkdir build
