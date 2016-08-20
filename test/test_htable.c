@@ -16,30 +16,34 @@ typedef struct
 
 typedef ExpressionTableNodeData *ExpressionTableNode;
 
-bool keyeq_func(const HTableNode* a_, const HTableNode* b_, void *arg)
+static bool
+keyeq_func(const HTableNode* a_, const HTableNode* b_, void *arg)
 {
 	ExpressionTableNode a = (ExpressionTableNode)a_;
 	ExpressionTableNode b = (ExpressionTableNode)b_;
 	return (strcmp(a->expression, b->expression) == 0);
 }
 
-uint32_t hash_func(const HTableNode* a_, void *arg)
+static uint32_t
+hash_func(const HTableNode* a_, void *arg)
 {
 	ExpressionTableNode a = (ExpressionTableNode)a_;
 	return htable_default_hash(a->expression, strlen(a->expression));
 }
 
-void* alloc_func(size_t size, void *arg)
+static void*
+alloc_func(size_t size, void *arg)
 {
 	return malloc(size);
 }
 
-void free_func(void* mem, void *arg)
+static void
+free_func(void* mem, void *arg)
 {
 	free(mem);
 }
 
-void
+static void
 run_test(HTable* htable)
 {
 	int i, j;

@@ -394,7 +394,8 @@ inverted_walk_test()
 	assert(nitems == array_size);
 }
 
-void run_tests()
+static void
+run_tests()
 {
 	general_test();
 	left_right_walk_test();
