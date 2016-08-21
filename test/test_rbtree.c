@@ -268,7 +268,7 @@ right_left_walk_test()
 
 	/* free memory */
 	nitems = 0;
-	while( (tmp = (TreeItem)rb_leftmost(&tree)) )
+	while( (tmp = (TreeItem)rb_rightmost(&tree)) )
 	{
 		rb_delete(&tree, (RBNode*)tmp);
 		nitems++;
@@ -414,7 +414,7 @@ inverted_walk_test()
 
 	/* free memory */
 	nitems = 0;
-	while( (tmp = (TreeItem)rb_leftmost(&tree)) )
+	while( (tmp = (TreeItem)rb_rightmost(&tree)) )
 	{
 		rb_delete(&tree, (RBNode*)tmp);
 		nitems++;

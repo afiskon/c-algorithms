@@ -159,6 +159,28 @@ rb_leftmost(RBTree *rb)
 	return NULL;
 }
 
+/*
+ * rb_rightmost: fetch the rightmost (highest-valued) tree node.
+ * Returns NULL if tree is empty.
+ */
+RBNode *
+rb_rightmost(RBTree *rb)
+{
+	RBNode	   *node = rb->root;
+	RBNode	   *rightmost = rb->root;
+
+	while (node != RBNIL)
+	{
+		rightmost = node;
+		node = node->right;
+	}
+
+	if (rightmost != RBNIL)
+		return rightmost;
+
+	return NULL;
+}
+
 /**********************************************************************
  *							  Insertion								  *
  **********************************************************************/

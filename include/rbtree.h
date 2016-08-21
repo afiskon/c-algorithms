@@ -71,6 +71,7 @@ extern void rb_create(RBTree* tree,
 
 extern RBNode *rb_find(RBTree *rb, const RBNode *data);
 extern RBNode *rb_leftmost(RBTree *rb);
+extern RBNode *rb_rightmost(RBTree *rb);
 
 extern RBNode *rb_insert(RBTree *rb, const RBNode *data, bool *isNew);
 extern void rb_delete(RBTree *rb, RBNode *node);
