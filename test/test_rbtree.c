@@ -148,9 +148,13 @@ left_right_walk_test()
 		unique_numbers[j] = temp;
 	}
 
-	/* create and fill a tree */
+	/* create an empty tree */
 	rb_create(&tree, sizeof(TreeItemData), tree_comparator, tree_combiner, tree_allocfunc, tree_freefunc, NULL);
 
+	rb_begin_left_right_walk(&tree, &lrw);
+	assert(rb_left_right_walk(&lrw) == NULL);
+
+	/* fill a tree */
 	for(i = 0; i < array_size; i++)
 	{
 		sprintf(item.data, "Item %08x", unique_numbers[i]);
@@ -225,9 +229,13 @@ right_left_walk_test()
 		unique_numbers[j] = temp;
 	}
 
-	/* create and fill a tree */
+	/* create an empty tree */
 	rb_create(&tree, sizeof(TreeItemData), tree_comparator, tree_combiner, tree_allocfunc, tree_freefunc, NULL);
 
+	rb_begin_right_left_walk(&tree, &rlw);
+	assert(rb_right_left_walk(&rlw) == NULL);
+
+	/* fill a tree */
 	for(i = 0; i < array_size; i++)
 	{
 		sprintf(item.data, "Item %08x", unique_numbers[i]);
@@ -301,9 +309,13 @@ direct_walk_test()
 		unique_numbers[j] = temp;
 	}
 
-	/* create and fill a tree */
+	/* create an empty tree */
 	rb_create(&tree, sizeof(TreeItemData), tree_comparator, tree_combiner, tree_allocfunc, tree_freefunc, NULL);
 
+	rb_begin_direct_walk(&tree, &dw);
+	assert(rb_direct_walk(&dw) == NULL);
+
+	/* fill a tree */
 	for(i = 0; i < array_size; i++)
 	{
 		sprintf(item.data, "Item %08x", unique_numbers[i]);
@@ -370,9 +382,13 @@ inverted_walk_test()
 		unique_numbers[j] = temp;
 	}
 
-	/* create and fill a tree */
+	/* create an empty tree */
 	rb_create(&tree, sizeof(TreeItemData), tree_comparator, tree_combiner, tree_allocfunc, tree_freefunc, NULL);
 
+	rb_begin_inverted_walk(&tree, &iw);
+	assert(rb_inverted_walk(&iw) == NULL);
+
+	/* fill a tree */
 	for(i = 0; i < array_size; i++)
 	{
 		sprintf(item.data, "Item %08x", unique_numbers[i]);
