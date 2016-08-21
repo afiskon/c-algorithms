@@ -84,6 +84,10 @@ general_test()
 	}
 	assert(strcmp(temp_buff, "Item A,Item B,Item C,") == 0);
 
+	strcpy(item.data, "No Such Item");
+	tmp = (TreeItem)rb_find(&tree, (RBNode*)&item);
+	assert(tmp == NULL);
+
 	strcpy(item.data, "Item A");
 	tmp = (TreeItem)rb_find(&tree, (RBNode*)&item);
 	assert(tmp != NULL);
