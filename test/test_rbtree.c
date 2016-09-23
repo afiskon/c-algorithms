@@ -133,7 +133,7 @@ left_right_walk_test()
 	int array_size = UNIQUE_NUMBERS_ARRAY_SIZE;
 
 #ifdef INIFNITE_TEST
-	array_size = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+	array_size = (int)((((double)rand()) / ((double)RAND_MAX+1.0)) * array_size);
 #endif
 
 	for(i = 0; i < array_size; i++)
@@ -145,7 +145,7 @@ left_right_walk_test()
 	/* shuffle numbers */
 	for(i = 0; i < array_size; i++)
 	{
-		j = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+		j = (int)((((double)rand()) / ((double)RAND_MAX+1.0)) * array_size);
 		assert((j >= 0) && (j < array_size));
 		temp = unique_numbers[i];
 		unique_numbers[i] = unique_numbers[j];
@@ -214,7 +214,7 @@ right_left_walk_test()
 	int array_size = UNIQUE_NUMBERS_ARRAY_SIZE;
 
 #ifdef INIFNITE_TEST
-	array_size = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+	array_size = (int)((((double)rand()) / ((double)RAND_MAX+1.0)) * array_size);
 #endif
 
 	for(i = 0; i < array_size; i++)
@@ -226,7 +226,7 @@ right_left_walk_test()
 	/* shuffle numbers */
 	for(i = 0; i < array_size; i++)
 	{
-		j = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+		j = (int)((((double)rand()) / ((double)RAND_MAX+1.0)) * array_size);
 		assert((j >= 0) && (j < array_size));
 		temp = unique_numbers[i];
 		unique_numbers[i] = unique_numbers[j];
@@ -294,7 +294,7 @@ direct_walk_test()
 	int array_size = UNIQUE_NUMBERS_ARRAY_SIZE;
 
 #ifdef INIFNITE_TEST
-	array_size = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+	array_size = (int)((((double)rand()) / ((double)RAND_MAX+1.0)) * array_size);
 #endif
 
 	for(i = 0; i < array_size; i++)
@@ -306,7 +306,7 @@ direct_walk_test()
 	/* shuffle numbers */
 	for(i = 0; i < array_size; i++)
 	{
-		j = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+		j = (int)((((double)rand()) / ((double)RAND_MAX+1.0)) * array_size);
 		assert((j >= 0) && (j < array_size));
 		temp = unique_numbers[i];
 		unique_numbers[i] = unique_numbers[j];
@@ -367,7 +367,7 @@ inverted_walk_test()
 	int array_size = UNIQUE_NUMBERS_ARRAY_SIZE;
 
 #ifdef INIFNITE_TEST
-	array_size = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+	array_size = (int)((((double)rand()) / ((double)RAND_MAX+1.0)) * array_size);
 #endif
 
 	for(i = 0; i < array_size; i++)
@@ -379,7 +379,7 @@ inverted_walk_test()
 	/* shuffle numbers */
 	for(i = 0; i < array_size; i++)
 	{
-		j = (int)((((double)rand()) / ((double)(RAND_MAX+1))) * array_size);
+		j = (int)((((double)rand()) / ((double)RAND_MAX+1.0)) * array_size);
 		assert((j >= 0) && (j < array_size));
 		temp = unique_numbers[i];
 		unique_numbers[i] = unique_numbers[j];
