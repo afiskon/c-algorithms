@@ -1,14 +1,6 @@
 # c-algorithms
 
-## Index
-
-* Data Structures (src/struct/)
-	* Single- and double-linked lists (ilist.c)
-	* Red-black trees (rbtree.c)
-	* Hash tables (htable.c)
-* Crytography (src/crypto/)
-	* MD5 Hashing (crypto/md5.c)
-	* More will be added soon!
+Collection of BSD/MIT-licensed algorithms implementations in pure C. High test coverage.
 
 ## Usage
 
@@ -31,4 +23,14 @@ mkdir build
 cd build
 ../cov.sh
 ```
+
+## Index
+
+* Data Structures (src/struct/)
+	* Single- and double-linked lists (ilist.c)
+	* Red-black trees (rbtree.c)
+	* Hash tables (htable.c)
+* Crytography (src/crypto/)
+	* MD5 Hashing (crypto/md5.c)
+	* More will be added soon!
 
