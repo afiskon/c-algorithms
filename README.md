@@ -31,6 +31,6 @@ cd build
 	* Red-black trees (rbtree.c)
 	* Hash tables (htable.c)
 * Crytography (src/crypto/)
-	* MD5 Hashing (crypto/md5.c)
+	* MD5 hashing (crypto/md5.c)
 	* More will be added soon!
 
