@@ -1,6 +1,7 @@
 # TODO
 
 * Add algorithms: crypto: SHA1, SHA2 family, AES, RSA, EC, DH, Random/Entropy (see pgcrypto) + utils: crc32, adler32, crc64
+* Add BSD/MIT-licensed compression algoritms, including pglz
 * Create utils.c, utils.h, move bytesToHex() there
 * Refactor rbtree
 	* Never override existing RB-tree nodes (see rbtree.c:593)
