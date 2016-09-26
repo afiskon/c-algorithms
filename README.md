@@ -25,6 +25,8 @@ make test
 How to make a coverage report:
 
 ```
+sudo apt-get install lcov
+
 mkdir build
 cd build
 ../cov.sh
