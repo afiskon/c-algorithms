@@ -36,11 +36,12 @@ int main()
 		"8215EF0796A20BCAAAE116D3876C664A", "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
 		"D174AB98D277D9F5A5611C2C9F419D9F", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
 		"57EDF4A22BE3C955AC49DA2E2107B67A", "12345678901234567890123456789012345678901234567890123456789012345678901234567890",
-		NULL
+		"7707D6AE4E027C70EEA2A935C2296F21", NULL
 	};
-	int i = 0;
+	char a10[] = "aaaaaaaaaa";
+	int j, i = 0;
 
-	while(vectors[i] != NULL)
+	while(vectors[i+1] != NULL)
 	{
 		MD5Init(&ctx);
 		MD5Update(&ctx, (uint8_t*)vectors[i+1], strlen(vectors[i+1]));
@@ -50,6 +51,17 @@ int main()
 		assert(strcmp(strres, vectors[i]) == 0);
 		i += 2;
 	}
+
+	// Vector 8, 1 million times "a"
+	MD5Init(&ctx);
+	for(j = 0; j < 1000000 / (sizeof(a10)-1); j++)
+	{
+		MD5Update(&ctx, (uint8_t*)a10, sizeof(a10)-1);
+	}
+	MD5Final(res, &ctx);
+	bytesToHex(res, strres);
+	printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
+	assert(strcmp(strres, vectors[i]) == 0);
 
 	return 0;
 }
