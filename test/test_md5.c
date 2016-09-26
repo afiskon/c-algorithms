@@ -36,5 +36,22 @@ int main()
 	printf("Vector 0, result = %s\n", strres);
 	assert(strcmp(strres, "D41D8CD98F00B204E9800998ECF8427E") == 0);
 
+	// Vector 1. message="a"
+	MD5Init(&ctx);
+	MD5Update(&ctx, (uint8_t*)"a", 1);
+	MD5Final(res, &ctx);
+	bytesToHex(res, strres);
+	printf("Vector 1, result = %s\n", strres);
+	assert(strcmp(strres, "0CC175B9C0F1B6A831C399E269772661") == 0);
+
+	// Vector 2. message="abc"
+	MD5Init(&ctx);
+	MD5Update(&ctx, (uint8_t*)"abc", 3);
+	MD5Final(res, &ctx);
+	bytesToHex(res, strres);
+	printf("Vector 2, result = %s\n", strres);
+	assert(strcmp(strres, "900150983CD24FB0D6963F7D28E17F72") == 0);
+
+
 	return 0;
 }
