@@ -17,7 +17,7 @@
  *-------------------------------------------------------------------------
  */
 
-#include "ilist.h"
+#include "struct/ilist.h"
 
 /*
  * Delete 'node' from list.

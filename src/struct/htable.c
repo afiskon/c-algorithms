@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include "htable.h"
+#include "struct/htable.h"
 
 #define MIN_HTABLE_SIZE (1 << 3)
 

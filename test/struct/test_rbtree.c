@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <sys/time.h>
-#include "rbtree.h"
+#include "struct/rbtree.h"
 
 /* #define INIFNITE_TEST */
 #define UNIQUE_NUMBERS_ARRAY_SIZE 7777

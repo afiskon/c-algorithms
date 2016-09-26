@@ -25,7 +25,7 @@
  *-------------------------------------------------------------------------
  */
 
-#include "rbtree.h"
+#include "struct/rbtree.h"
 #include <assert.h>
 
 /*

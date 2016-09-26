@@ -3,7 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include <unistd.h>
-#include "htable.h"
+#include "struct/htable.h"
 
 #define N 100
 
