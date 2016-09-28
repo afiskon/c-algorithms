@@ -35,7 +35,7 @@
 
 #include <stdint.h>
 
-#define MD5_DIGEST_LENGTH	16	
+#define MD5_DIGEST_LENGTH	16
 #define MD5_DIGEST_STRING_LENGTH (MD5_DIGEST_LENGTH * 2 + 1)
 
 #define MD5_BUFLEN 64
@@ -73,9 +73,9 @@ extern void md5_result(uint8_t *, md5_ctxt *);
 
 /* compatibility */
 #define MD5_CTX		md5_ctxt
-#define MD5Init(x)	md5_init((x))
-#define MD5Update(x, y, z)	md5_loop((x), (y), (z))
-#define MD5Final(x, y) \
+#define MD5_Init(x)	md5_init((x))
+#define MD5_Update(x, y, z)	md5_loop((x), (y), (z))
+#define MD5_Final(x, y) \
 do {				\
 	md5_pad((y));		\
 	md5_result((x), (y));	\

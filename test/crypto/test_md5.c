@@ -43,9 +43,9 @@ int main()
 
 	while(vectors[i+1] != NULL)
 	{
-		MD5Init(&ctx);
-		MD5Update(&ctx, (uint8_t*)vectors[i+1], strlen(vectors[i+1]));
-		MD5Final(res, &ctx);
+		MD5_Init(&ctx);
+		MD5_Update(&ctx, (uint8_t*)vectors[i+1], strlen(vectors[i+1]));
+		MD5_Final(res, &ctx);
 		bytesToHex(res, MD5_DIGEST_LENGTH, strres);
 		printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
 		assert(strcmp(strres, vectors[i]) == 0);
@@ -53,12 +53,12 @@ int main()
 	}
 
 	// Vector 8, 1 million times "a"
-	MD5Init(&ctx);
+	MD5_Init(&ctx);
 	for(j = 0; j < 1000000 / (sizeof(a10)-1); j++)
 	{
-		MD5Update(&ctx, (uint8_t*)a10, sizeof(a10)-1);
+		MD5_Update(&ctx, (uint8_t*)a10, sizeof(a10)-1);
 	}
-	MD5Final(res, &ctx);
+	MD5_Final(res, &ctx);
 	bytesToHex(res, MD5_DIGEST_LENGTH, strres);
 	printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
 	assert(strcmp(strres, vectors[i]) == 0);

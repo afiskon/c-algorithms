@@ -43,9 +43,9 @@ int main()
 
 	while(vectors[i+1] != NULL)
 	{
-		SHA1Init(&ctx);
-		SHA1Update(&ctx, (uint8_t*)vectors[i+1], strlen(vectors[i+1]));
-		SHA1Final(res, &ctx);
+		SHA1_Init(&ctx);
+		SHA1_Update(&ctx, (uint8_t*)vectors[i+1], strlen(vectors[i+1]));
+		SHA1_Final(res, &ctx);
 		bytesToHex(res, SHA1_DIGEST_LENGTH, strres);
 		printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
 		assert(strcmp(strres, vectors[i]) == 0);
@@ -53,12 +53,12 @@ int main()
 	}
 
 	// Vector 8, 1 million times "a"
-	SHA1Init(&ctx);
+	SHA1_Init(&ctx);
 	for(j = 0; j < 1000000 / (sizeof(a10)-1); j++)
 	{
-		SHA1Update(&ctx, (uint8_t*)a10, sizeof(a10)-1);
+		SHA1_Update(&ctx, (uint8_t*)a10, sizeof(a10)-1);
 	}
-	SHA1Final(res, &ctx);
+	SHA1_Final(res, &ctx);
 	bytesToHex(res, SHA1_DIGEST_LENGTH, strres);
 	printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
 	assert(strcmp(strres, vectors[i]) == 0);

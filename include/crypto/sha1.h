@@ -40,7 +40,7 @@
 
 #include <stdint.h>
 
-#define SHA1_DIGEST_LENGTH 20		
+#define SHA1_DIGEST_LENGTH 20
 #define SHA1_DIGEST_STRING_LENGTH (SHA1_DIGEST_LENGTH * 2 + 1)
 
 struct sha1_ctxt
@@ -71,8 +71,8 @@ extern void sha1_result(struct sha1_ctxt *, uint8_t *);
 /* compatibility with other SHA1 source codes */
 typedef struct sha1_ctxt SHA1_CTX;
 
-#define SHA1Init(x)		sha1_init((x))
-#define SHA1Update(x, y, z) sha1_loop((x), (y), (z))
-#define SHA1Final(x, y)		sha1_result((y), (x))
+#define SHA1_Init(x)		sha1_init((x))
+#define SHA1_Update(x, y, z) sha1_loop((x), (y), (z))
+#define SHA1_Final(x, y)		sha1_result((y), (x))
 
 #endif   /* _NETINET6_SHA1_H_ */
