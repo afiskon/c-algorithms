@@ -4,20 +4,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include "crypto/md5.h"
-
-static void
-bytesToHex(uint8_t* b, int len, char *s)
-{
-	static const char *hex = "0123456789ABCDEF";
-	int		 q, w;
-
-	for (q = 0, w = 0; q < len; q++)
-	{
-		s[w++] = hex[(b[q] >> 4) & 0x0F];
-		s[w++] = hex[b[q] & 0x0F];
-	}
-	s[w] = '\0';
-}
+#include "common/utils.h"
 
 /*
 See https://www.cosic.esat.kuleuven.be/nessie/testvectors/hash/md5/Md5-128.unverified.test-vectors

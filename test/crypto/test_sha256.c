@@ -4,20 +4,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include "crypto/sha2.h"
-
-static void
-bytesToHex(uint8_t* b, int len, char *s)
-{
-	static const char *hex = "0123456789ABCDEF";
-	int		 q, w;
-
-	for (q = 0, w = 0; q < len; q++)
-	{
-		s[w++] = hex[(b[q] >> 4) & 0x0F];
-		s[w++] = hex[b[q] & 0x0F];
-	}
-	s[w] = '\0';
-}
+#include "common/utils.h"
 
 /*
 See http://www.di-mgt.com.au/sha_testvectors.html
