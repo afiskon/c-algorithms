@@ -25,8 +25,8 @@ See http://www.di-mgt.com.au/sha_testvectors.html
 int main()
 {
 	SHA1_CTX ctx;
-	uint8_t res[SHA1_RESULT_LEN];
-	char strres[SHA1_RESULT_LEN*2 + 1];
+	uint8_t res[SHA1_DIGEST_LENGTH];
+	char strres[SHA1_DIGEST_STRING_LENGTH];
 	char* vectors[] = {
 		"DA39A3EE5E6B4B0D3255BFEF95601890AFD80709", "",
 		"86F7E437FAA5A7FCE15D1DDCB9EAEAEA377667B8", "a",
@@ -46,7 +46,7 @@ int main()
 		SHA1Init(&ctx);
 		SHA1Update(&ctx, (uint8_t*)vectors[i+1], strlen(vectors[i+1]));
 		SHA1Final(res, &ctx);
-		bytesToHex(res, SHA1_RESULT_LEN, strres);
+		bytesToHex(res, SHA1_DIGEST_LENGTH, strres);
 		printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
 		assert(strcmp(strres, vectors[i]) == 0);
 		i += 2;
@@ -59,7 +59,7 @@ int main()
 		SHA1Update(&ctx, (uint8_t*)a10, sizeof(a10)-1);
 	}
 	SHA1Final(res, &ctx);
-	bytesToHex(res, SHA1_RESULT_LEN, strres);
+	bytesToHex(res, SHA1_DIGEST_LENGTH, strres);
 	printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
 	assert(strcmp(strres, vectors[i]) == 0);
 

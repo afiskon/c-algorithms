@@ -40,6 +40,9 @@
 
 #include <stdint.h>
 
+#define SHA1_DIGEST_LENGTH 20		
+#define SHA1_DIGEST_STRING_LENGTH (SHA1_DIGEST_LENGTH * 2 + 1)
+
 struct sha1_ctxt
 {
 	union
@@ -71,7 +74,5 @@ typedef struct sha1_ctxt SHA1_CTX;
 #define SHA1Init(x)		sha1_init((x))
 #define SHA1Update(x, y, z) sha1_loop((x), (y), (z))
 #define SHA1Final(x, y)		sha1_result((y), (x))
-
-#define SHA1_RESULT_LEN	(160/8)
 
 #endif   /* _NETINET6_SHA1_H_ */

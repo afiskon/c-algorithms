@@ -10,5 +10,9 @@ target_link_libraries(test_md5 CAlgorithms)
 add_executable(test_sha1 test_sha1.c)
 target_link_libraries(test_sha1 CAlgorithms)
 
+add_executable(test_sha256 test_sha256.c)
+target_link_libraries(test_sha256 CAlgorithms)
+
 add_test(test_md5 "./test_md5")
 add_test(test_sha1 "./test_sha1")
+add_test(test_sha256 "./test_sha256")

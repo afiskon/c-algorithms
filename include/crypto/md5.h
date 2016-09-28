@@ -35,8 +35,10 @@
 
 #include <stdint.h>
 
-#define MD5_RESULT_LEN 16 /* in bytes, 32 for hex representation */
-#define MD5_BUFLEN	64
+#define MD5_DIGEST_LENGTH	16	
+#define MD5_DIGEST_STRING_LENGTH (MD5_DIGEST_LENGTH * 2 + 1)
+
+#define MD5_BUFLEN 64
 
 typedef struct
 {
