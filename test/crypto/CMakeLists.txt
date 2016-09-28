@@ -19,3 +19,7 @@ add_test(test_sha256 "./test_sha256")
 add_executable(test_sha384 test_sha384.c)
 target_link_libraries(test_sha384 CAlgorithms)
 add_test(test_sha384 "./test_sha384")
+
+add_executable(test_sha512 test_sha512.c)
+target_link_libraries(test_sha512 CAlgorithms)
+add_test(test_sha512 "./test_sha512")
