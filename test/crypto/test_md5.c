@@ -6,12 +6,12 @@
 #include "crypto/md5.h"
 
 static void
-bytesToHex(uint8_t b[MD5_RESULT_LEN], char *s)
+bytesToHex(uint8_t* b, int len, char *s)
 {
 	static const char *hex = "0123456789ABCDEF";
 	int		 q, w;
 
-	for (q = 0, w = 0; q < 16; q++)
+	for (q = 0, w = 0; q < len; q++)
 	{
 		s[w++] = hex[(b[q] >> 4) & 0x0F];
 		s[w++] = hex[b[q] & 0x0F];
@@ -24,7 +24,7 @@ See https://www.cosic.esat.kuleuven.be/nessie/testvectors/hash/md5/Md5-128.unver
 */
 int main()
 {
-	md5_ctxt ctx;
+	MD5_CTX ctx;
 	uint8_t res[MD5_RESULT_LEN];
 	char strres[MD5_RESULT_LEN*2 + 1];
 	char* vectors[] = {
@@ -46,7 +46,7 @@ int main()
 		MD5Init(&ctx);
 		MD5Update(&ctx, (uint8_t*)vectors[i+1], strlen(vectors[i+1]));
 		MD5Final(res, &ctx);
-		bytesToHex(res, strres);
+		bytesToHex(res, MD5_RESULT_LEN, strres);
 		printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
 		assert(strcmp(strres, vectors[i]) == 0);
 		i += 2;
@@ -59,7 +59,7 @@ int main()
 		MD5Update(&ctx, (uint8_t*)a10, sizeof(a10)-1);
 	}
 	MD5Final(res, &ctx);
-	bytesToHex(res, strres);
+	bytesToHex(res, MD5_RESULT_LEN, strres);
 	printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
 	assert(strcmp(strres, vectors[i]) == 0);
 

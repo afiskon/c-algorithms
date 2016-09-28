@@ -32,5 +32,6 @@ cd build
 	* Hash tables (htable.c)
 * Crytography (src/crypto/)
 	* MD5 hashing (crypto/md5.c)
+	* SHA1 hashing (crypto/sha1.c)
 	* More will be added soon!
 

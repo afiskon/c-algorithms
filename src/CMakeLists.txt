@@ -8,4 +8,5 @@ add_library(CAlgorithms STATIC
 	struct/htable.c
 
 	crypto/md5.c
+	crypto/sha1.c
 )
