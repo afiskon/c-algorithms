@@ -1,6 +1,6 @@
 # TODO
 
-* Add algorithms: crypto: AES, RSA, EC, DH, Random/Entropy (see pgcrypto) + utils: crc32, adler32, crc64
+* Add algorithms: crypto: AES, RSA, EC (see https://github.com/afiskon/c-elliptic-curves-crypto ), DH, Random/Entropy (see pgcrypto) + utils: crc32, adler32, crc64
 * Add BSD/MIT-licensed compression algoritms, including pglz
 * Refactor rbtree
 	* Never override existing RB-tree nodes (see rbtree.c:593)
