@@ -42,7 +42,34 @@ test_ecb()
 static void
 test_cbc()
 {
-	// TODO
+	rijndael_ctx ctx;
+	bool equal;
+	uint8_t key[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+	uint8_t iv[] = {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+	uint8_t data[16*3];
+
+	assert(sizeof(key) == 16);
+	assert(sizeof(iv) == 16);
+	assert((sizeof(data) % 16) == 0);
+
+	for(uint8_t i = 0; i < sizeof(data); i++)
+		data[i] = i;
+
+	aes_set_key(&ctx, key, sizeof(key)*8, 0);
+	aes_cbc_encrypt(&ctx, iv, data, sizeof(data));
+
+	equal = true;
+	for(uint8_t i = 0; i < sizeof(data); i++)
+		equal &= (data[i] == i);
+
+	assert(!equal);
+
+	aes_cbc_decrypt(&ctx, iv, data, sizeof(data));
+
+	for(uint8_t i = 0; i < sizeof(data); i++)
+		assert(data[i] == i);
+
+	printf("CBC test passed!\n");
 }
 
 /*
