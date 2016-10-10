@@ -3,7 +3,10 @@
 
 #include <stdint.h>
 
+int
+hexToBytes(char* s, uint8_t* b, int blen);
+
 void
-bytesToHex(uint8_t* b, int len, char *s);
+bytesToHex(uint8_t* b, int blen, char *s);
 
 #endif

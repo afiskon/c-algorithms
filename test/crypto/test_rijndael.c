@@ -6,6 +6,7 @@
 #include "crypto/rijndael.h"
 #include "common/utils.h"
 
+
 /*
 See:
 
@@ -15,13 +16,47 @@ https://www.cosic.esat.kuleuven.be/nessie/testvectors/bc/rijndael/Rijndael-256-1
 */
 int main()
 {
-	char* vectors[] = { };
+	rijndael_ctx ctx;
+	char* vectors[] = {
+		// key, plain, encrypted
+		"000102030405060708090A0B0C0D0E0F",
+		"762A5AB50929189CEFDB99434790AAD8",
+		"00112233445566778899AABBCCDDEEFF",
 
-	// TODO write some real tests!
+		// TODO: more test vectors
 
-//	bytesToHex(res, SHA1_DIGEST_LENGTH, strres);
-//	printf("Vector %i, result = %s, expected = %s\n", i / 2, strres, vectors[i]);
-//	assert(strcmp(strres, vectors[i]) == 0);
+ 	};
+	int t, ntests = sizeof(vectors) / sizeof(vectors[0]) / 3;
+
+
+	for(t = 0; t < ntests; t++)
+	{
+		uint8_t bkey[32]; // at most 256 bits
+		uint8_t bplain[16];
+		uint8_t bencrypted[16];
+		char encrypted_hex[33];
+		char* skey = vectors[t*3];
+		char* splain = vectors[t*3 + 1];
+		char* sencrypted = vectors[t*3 + 2];
+		int bkeylen = strlen(skey) / 2;
+		int tmp;
+
+		tmp = hexToBytes(skey, bkey, bkeylen);
+		assert(tmp == 0);
+
+		tmp = hexToBytes(splain, bplain, sizeof(bplain));
+		assert(tmp == 0);
+
+		rijndael_set_key(&ctx, (u4byte*)&bkey, bkeylen*8, 0);
+		rijndael_encrypt(&ctx, (u4byte*)&bplain, (u4byte*)&bencrypted);
+		bytesToHex(bencrypted, sizeof(bencrypted), encrypted_hex);
+		assert(strcmp(sencrypted, encrypted_hex) == 0);
+
+		printf("Test vector %d, skey = %s, splain = %s, sencrypted = %s, encrypted_hex = %s\n",
+				t, skey, splain, sencrypted, encrypted_hex);
+
+		// TODO: also test decryption
+	}
 
 	return 0;
 }
