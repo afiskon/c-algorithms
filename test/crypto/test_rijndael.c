@@ -85,5 +85,7 @@ int main()
 		assert(strcmp(splain, plain_hex) == 0);
 	}
 
+	// TODO: cover ECB and CBC encryption
+
 	return 0;
 }

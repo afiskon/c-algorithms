@@ -1,5 +1,6 @@
 # TODO
 
+* Implement AES CTR mode
 * Add algorithms: crypto: RSA, EC (see https://github.com/afiskon/c-elliptic-curves-crypto ), DH, Random/Entropy (see pgcrypto) + utils: crc32, adler32, crc64
 * Add BSD/MIT-licensed compression algoritms, including pglz
 * Refactor rbtree
