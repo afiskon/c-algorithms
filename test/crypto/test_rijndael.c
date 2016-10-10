@@ -2,10 +2,48 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <assert.h>
 #include "crypto/rijndael.h"
 #include "common/utils.h"
 
+
+static void
+test_ecb()
+{
+	rijndael_ctx ctx;
+	bool equal;
+	uint8_t key[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+	uint8_t data[16*3];
+
+	assert(sizeof(key) == 16);
+	assert((sizeof(data) % 16) == 0);
+
+	for(uint8_t i = 0; i < sizeof(data); i++)
+		data[i] = i;
+
+	aes_set_key(&ctx, key, sizeof(key)*8, 0);
+	aes_ecb_encrypt(&ctx, data, sizeof(data));
+
+	equal = true;
+	for(uint8_t i = 0; i < sizeof(data); i++)
+		equal &= (data[i] == i);
+
+	assert(!equal);
+
+	aes_ecb_decrypt(&ctx, data, sizeof(data));
+
+	for(uint8_t i = 0; i < sizeof(data); i++)
+		assert(data[i] == i);
+
+	printf("ECB test passed!\n");
+}
+
+static void
+test_cbc()
+{
+	// TODO
+}
 
 /*
 See:
@@ -44,7 +82,6 @@ int main()
 		"EA024714AD5C4D84EA024714AD5C4D84",
  	};
 	int t, ntests = sizeof(vectors) / sizeof(vectors[0]) / 3;
-
 
 	for(t = 0; t < ntests; t++)
 	{
@@ -85,7 +122,8 @@ int main()
 		assert(strcmp(splain, plain_hex) == 0);
 	}
 
-	// TODO: cover ECB and CBC encryption
+	test_ecb();
+	test_cbc();
 
 	return 0;
 }
