@@ -10,6 +10,7 @@ add_library(CAlgorithms STATIC
 	crypto/md5.c
 	crypto/sha1.c
 	crypto/sha2.c
+	crypto/rijndael.c
 
 	common/utils.c
 )

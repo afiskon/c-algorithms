@@ -23,3 +23,8 @@ add_test(test_sha384 "./test_sha384")
 add_executable(test_sha512 test_sha512.c)
 target_link_libraries(test_sha512 CAlgorithms)
 add_test(test_sha512 "./test_sha512")
+
+add_executable(test_rijndael test_rijndael.c)
+target_link_libraries(test_rijndael CAlgorithms)
+add_test(test_rijndael "./test_rijndael")
+
