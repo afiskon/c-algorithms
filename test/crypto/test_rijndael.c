@@ -35,6 +35,7 @@ int main()
 		uint8_t bplain[16];
 		uint8_t bencrypted[16];
 		char encrypted_hex[33];
+		char plain_hex[33];
 		char* skey = vectors[t*3];
 		char* splain = vectors[t*3 + 1];
 		char* sencrypted = vectors[t*3 + 2];
@@ -48,14 +49,23 @@ int main()
 		assert(tmp == 0);
 
 		rijndael_set_key(&ctx, (u4byte*)&bkey, bkeylen*8, 0);
+
+		// test encryption
+
 		rijndael_encrypt(&ctx, (u4byte*)&bplain, (u4byte*)&bencrypted);
 		bytesToHex(bencrypted, sizeof(bencrypted), encrypted_hex);
+
+		// test decryption
+
+		memset(bplain, 0, sizeof(bplain));
+		rijndael_decrypt(&ctx, (u4byte*)&bencrypted, (u4byte*)&bplain);
+		bytesToHex(bplain, sizeof(bplain), plain_hex);
+
+		printf("Test vector %d, skey = %s, splain = %s, sencrypted = %s, encrypted_hex = %s, plain_hex = %s\n",
+				t, skey, splain, sencrypted, encrypted_hex, plain_hex);
+
 		assert(strcmp(sencrypted, encrypted_hex) == 0);
-
-		printf("Test vector %d, skey = %s, splain = %s, sencrypted = %s, encrypted_hex = %s\n",
-				t, skey, splain, sencrypted, encrypted_hex);
-
-		// TODO: also test decryption
+		assert(strcmp(splain, plain_hex) == 0);
 	}
 
 	return 0;
