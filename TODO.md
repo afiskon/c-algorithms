@@ -8,8 +8,11 @@
 	* Write a test: make sure that changing walk direction from left-right to right-left works well
 	* Implement search by part of the key: find\_by\_partial\_key\_march(rb, rb\_comparator, void\* arg)
 * Add AVL trees
+* Add skip lists, see:
+	* https://github.com/begeekmyfriend/skiplist/blob/master/skiplist.h
+	* https://github.com/antirez/redis/blob/unstable/src/t\_zset.c
 * Add LRU/LFU cache examples, see http://antirez.com/news/109
 * Add array-bases queue implementation (fifo)
 * Add in-memory B-tree implementation (See tarantool?)
-* Add scapegoat tree implementation https://github.com/delamonpansie/octopus/blob/master/third_party/sptree.h#L331
+* Add scapegoat tree implementation https://github.com/delamonpansie/octopus/blob/master/third\_party/sptree.h#L331
 * From time to time recheck code using Clang Static Analyzer, PVS-Studio, CppCheck, MemorySanitizer
