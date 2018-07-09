@@ -36,3 +36,9 @@ cd build
 	* AES (Rijndael) encryption (rijndael.c)
 	* More will be added soon!
 
+# See also
+
+Related articles:
+
+* https://eax.me/c-lists-rbtree/
+* https://eax.me/c-cryptography/
