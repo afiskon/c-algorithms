@@ -25,7 +25,7 @@ _htable_resize(HTable* tbl)
 
 	if(tbl->nitems > tbl->size)
 	{
-		new_size = tbl->size * 2;
+		new_size = tbl->size << 1;
 		new_mask = new_size - 1;
 		new_items = tbl->allocfunc(sizeof(HTableNode*) * new_size, tbl->arg);
 		if(new_items == NULL)
@@ -62,9 +62,9 @@ _htable_resize(HTable* tbl)
 			} /* while */
 		} /* for */
 	}
-	else if(tbl->nitems <= (tbl->size / 2))
+	else if(tbl->nitems <= (tbl->size >> 1))
 	{
-		new_size = tbl->size / 2;
+		new_size = tbl->size >> 1;
 		new_mask = new_size - 1;
 		new_items = tbl->allocfunc(sizeof(HTableNode*) * new_size, tbl->arg);
 		if(new_items == NULL)
