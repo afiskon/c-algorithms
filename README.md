@@ -34,7 +34,6 @@ cd build
 	* MD5 hashing (md5.c)
 	* SHA1/SHA2 hashing (sha1.c, sha2.c)
 	* AES (Rijndael) encryption (rijndael.c)
-	* More will be added soon!
 
 # See also
 
