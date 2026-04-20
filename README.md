@@ -39,5 +39,5 @@ cd build
 
 Related articles:
 
-* https://eax.me/c-lists-rbtree/
-* https://eax.me/c-cryptography/
+* https://eax.me/2016/2016-07-27-c-lists-rbtree.html
+* https://eax.me/2018/2018-07-09-c-cryptography.html
